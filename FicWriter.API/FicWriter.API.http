@@ -1,0 +1,6 @@
+@FicWriter.API_HostAddress = http://localhost:5195
+
+GET {{FicWriter.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
