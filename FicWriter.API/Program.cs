@@ -1,34 +1,57 @@
+using FicWriter.API.Endpoints;
+using FicWriter.API.Infrastructure.Data;
+using FicWriter.API.Infrastructure.Encoding.Password;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
-namespace FicWriter.API
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<FicWriterDbContext>(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .UseSnakeCaseNamingConvention();
+});
 
-            builder.Services.AddControllers();
+builder.Services.AddControllers();
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
 
-            var app = builder.Build();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<Program>();
+});
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-            app.UseHttpsRedirection();
+builder.Services.AddRepositories();
 
-            app.UseAuthorization();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
+builder.Services.AddSwaggerGen();
 
-            app.MapControllers();
+builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
-            app.Run();
-        }
-    }
+var app = builder.Build();
+
+app.MapEndpoints();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+public partial class Program
+{
+    protected Program() { }
 }
