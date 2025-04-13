@@ -4,15 +4,9 @@ namespace FicWriter.API.Features.Users.Create;
 
 public static class CreateUserMapper
 {
-    public static CreateUserCommand ToCommand(this CreateUserRequest request)
-    {
-        return new CreateUserCommand(request.Name, request.Email, request.Password);
-    }
+    public static CreateUserCommand ToCommand(this CreateUserRequest request) => new(request.Name, request.Email, request.Password);
 
-    public static CreateUserResponse ToResponse(this User user)
-    {
-        return new CreateUserResponse(user.Id, user.Name);
-    }
+    public static CreateUserResponse ToResponse(this User user, string token) => new(user.Id, user.Name, new AccessToken { Token = token });
 
     public static User ToUser(this CreateUserCommand command, string hashedPassword)
     {
@@ -21,7 +15,8 @@ public static class CreateUserMapper
             Name = command.Name,
             Email = command.Email,
             Password = hashedPassword,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UserIdentifier = Guid.NewGuid()
         };
     }
 }

@@ -51,6 +51,10 @@ namespace FicWriter.API.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
+                    b.Property<Guid>("UserIdentifier")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_identifier");
+
                     b.HasKey("Id")
                         .HasName("pk_users");
 

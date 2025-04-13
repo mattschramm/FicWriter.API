@@ -1,6 +1,7 @@
 ﻿using CommonTestUtils.Repositories;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
+using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Users.Create;
 using Shouldly;
 
@@ -21,12 +22,14 @@ public class CreateUserHandlerTest
         var userWriteOnly = UserWriteOnlyBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var passwordHasher = PasswordHasherBuilder.Build();
+        var accessToken = JwtTokenGeneratorBuilder.Build();
 
         return new CreateUserCommandHandler(
             userReadOnly,
             userWriteOnly,
             unitOfWork,
-            passwordHasher);
+            passwordHasher,
+            accessToken);
     }
 
     [Fact]
@@ -40,6 +43,7 @@ public class CreateUserHandlerTest
         result.IsError.ShouldBeFalse();
         result.Value.ShouldNotBeNull();
         result.Value.Name.ShouldBe(request.Name);
+        result.Value.AccessToken.ShouldNotBeNull();
     }
 
     [Fact]

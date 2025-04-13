@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FicWriter.API\FicWriter.API.csproj" />
-    <ProjectReference Include="..\tests\FicWriter.TestsCommon\CommonTestUtils.csproj" />
+    <ProjectReference Include="..\..\FicWriter.API\FicWriter.API.csproj" />
+    <ProjectReference Include="..\FicWriter.TestsCommon\CommonTestUtils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

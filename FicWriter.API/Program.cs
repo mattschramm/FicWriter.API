@@ -1,17 +1,12 @@
 using FicWriter.API.Endpoints;
+using FicWriter.API.Infrastructure;
 using FicWriter.API.Infrastructure.Data;
-using FicWriter.API.Infrastructure.Encoding.Password;
+using FicWriter.API.Infrastructure.Security.Password;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<FicWriterDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-    .UseSnakeCaseNamingConvention();
-});
 
 builder.Services.AddControllers();
 
@@ -24,9 +19,7 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-builder.Services.AddRepositories();
-
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddSwaggerGen();
 

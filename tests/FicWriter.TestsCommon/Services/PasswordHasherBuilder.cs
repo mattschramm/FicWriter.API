@@ -1,4 +1,4 @@
-﻿using FicWriter.API.Infrastructure.Encoding.Password;
+﻿using FicWriter.API.Infrastructure.Security.Password;
 
 namespace CommonTestUtils.Services;
 

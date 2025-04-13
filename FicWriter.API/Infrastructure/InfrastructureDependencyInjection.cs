@@ -1,0 +1,52 @@
+﻿using FicWriter.API.Infrastructure.Data;
+using FicWriter.API.Infrastructure.Data.Repositories.Users;
+using FicWriter.API.Infrastructure.Security.Password;
+using FicWriter.API.Infrastructure.Security.Tokens.Generator;
+using Microsoft.EntityFrameworkCore;
+
+namespace FicWriter.API.Infrastructure;
+
+public static class InfrastructureDependencyInjection
+{
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        if (!configuration.GetValue<bool>("InMemoryTest"))
+            AddDbContext(services, configuration);
+
+        AddRepositories(services);
+        AddPasswordHasher(services);
+        AddTokenGenerator(services, configuration);
+
+        return services;
+    }
+
+    private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<FicWriterDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+            .UseSnakeCaseNamingConvention()
+            );
+    }
+
+    private static void AddRepositories(IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserReadOnly, UserRepository>();
+        services.AddScoped<IUserWriteOnly, UserRepository>();
+    }
+
+    private static void AddPasswordHasher(IServiceCollection services)
+    {
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+    }
+
+    private static void AddTokenGenerator(IServiceCollection services, IConfiguration configuration)
+    {
+        var key = configuration["Jwt:Key"]!;
+        var expirationTime = configuration.GetValue<uint>("Jwt:ExpirationTime");
+        var issuer = configuration["Jwt:Issuer"]!;
+        var audience = configuration["Jwt:Audience"]!;
+
+        services.AddScoped<IAccessTokenGenerator>(options => new JwtTokenGenerator(key, expirationTime, issuer, audience));
+    }
+}

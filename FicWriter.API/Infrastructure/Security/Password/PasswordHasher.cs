@@ -1,4 +1,4 @@
-﻿namespace FicWriter.API.Infrastructure.Encoding.Password;
+﻿namespace FicWriter.API.Infrastructure.Security.Password;
 
 public class PasswordHasher : IPasswordHasher
 {
