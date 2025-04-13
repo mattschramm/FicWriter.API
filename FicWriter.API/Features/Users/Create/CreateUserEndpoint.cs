@@ -8,16 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Users.Create;
 
-public sealed record CreateUserCommand(string Name, string Email, string Password) : IRequest<ErrorOr<CreateUserResponse>>;
-public sealed record CreateUserResponse(long Id, string Name);
-public sealed record CreateUserRequest(string Name, string Email, string Password);
-
 public class CreateUserEndpoint : IEndpoint
 { 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost("/user", Handle)
             .WithName("CreateUser")
+            .AllowAnonymous()
             .Produces<CreateUserResponse>(StatusCodes.Status200OK)
             .ProducesValidationProblem()
             .WithTags("Users");

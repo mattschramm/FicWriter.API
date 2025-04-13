@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FicWriter.API.Migrations
 {
     [DbContext(typeof(FicWriterDbContext))]
-    [Migration("20250407123126_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250413054717_UserTable")]
+    partial class UserTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,6 +53,10 @@ namespace FicWriter.API.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password");
+
+                    b.Property<Guid>("UserIdentifier")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_identifier");
 
                     b.HasKey("Id")
                         .HasName("pk_users");
