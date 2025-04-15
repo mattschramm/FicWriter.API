@@ -1,56 +1,47 @@
 ﻿using ErrorOr;
 using FicWriter.API.Features.Users.Shared;
-using FicWriter.API.Infrastructure.Data;
-using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
-using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.Password;
+using FicWriter.API.Infrastructure.Errors;
+using MediatR;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
-using MediatR;
+using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
+using FicWriter.API.Infrastructure.Data;
 
-namespace FicWriter.API.Features.Users.Create;
+namespace FicWriter.API.Features.Users.Login;
 
-public sealed record CreateUserCommand(string Name, string Email, string Password) : IRequest<ErrorOr<UserResponse>>;
+public record LoginCommand(string Email, string Password) : IRequest<ErrorOr<UserResponse>>;
 
-public class CreateUserCommandHandler(
+public class LoginCommandHandler(
     IUserReadOnly userReadOnly,
-    IUserWriteOnly userWriteOnly,
-    IUnitOfWork unitOfWork,
     IPasswordHasher passwordHasher,
     IAccessTokenGenerator accessTokenGenerator,
     IRefreshTokenGenerator refreshTokenGenerator,
-    ITokenWriteOnly tokenWriteOnly) 
-        : IRequestHandler<CreateUserCommand, ErrorOr<UserResponse>>
+    ITokenWriteOnly tokenWriteOnly,
+    IUnitOfWork unitOfWork) : IRequestHandler<LoginCommand, ErrorOr<UserResponse>>
 {
     private readonly IUserReadOnly _userReadOnly = userReadOnly;
-    private readonly IUserWriteOnly _userWriteOnly = userWriteOnly;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
     private readonly IRefreshTokenGenerator _refreshTokenGenerator = refreshTokenGenerator;
     private readonly ITokenWriteOnly _tokenWriteOnly = tokenWriteOnly;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<ErrorOr<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<UserResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        if (await _userReadOnly.ExistsWithEmail(request.Email))
+        var user = await _userReadOnly.GetByEmail(request.Email);
+
+        if (user is null || !_passwordHasher.Verify(request.Password, user.Password))
         {
-            return UserErrors.EmailAlreadyExists(request.Email);
+            return UserErrors.InvalidCredentials();
         }
-
-        var hashedPassword = _passwordHasher.Hash(request.Password);
-
-        var user = request.ToUser(hashedPassword);
-
-        await _userWriteOnly.Add(user);
-
-        await _unitOfWork.Commit();
 
         var accessToken = _accessTokenGenerator.Generate(user.UserIdentifier);
         var refreshToken = _refreshTokenGenerator.Generate(user.Id);
 
         await _tokenWriteOnly.Add(refreshToken);
-
+        
         await _unitOfWork.Commit();
 
         return user.ToResponse(accessToken, refreshToken.Token);

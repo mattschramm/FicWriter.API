@@ -8,6 +8,7 @@ public static class ErrorsExtensions
     private static readonly Dictionary<string, string> _customErrors = new()
     {
         { "User.EmailAlreadyExists", "Email already exists." },
+        { "User.InvalidCredentials", "Invalid credentials." },
     };
 
     public static IResult ToProblem(this List<Error> errors)

@@ -25,8 +25,8 @@ public class CreateUserTest : FicWriterFixture
         using var responseBody = await response.Content.ReadAsStreamAsync();
         using var responseData = await JsonDocument.ParseAsync(responseBody);
 
-        responseData.RootElement.GetProperty("id").GetInt64().ShouldBeGreaterThan(0);
         responseData.RootElement.GetProperty("name").GetString().ShouldBe(request.Name);
+        responseData.RootElement.GetProperty("accessToken").EnumerateObject().ShouldNotBeEmpty();
     }
 
     [Fact]

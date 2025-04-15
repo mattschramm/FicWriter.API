@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FicWriter.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Users;
 
@@ -8,11 +9,20 @@ public class UserRepository(FicWriterDbContext dbContext) : IUserReadOnly, IUser
 
     public async Task<bool> ExistsWithEmail(string email)
     {
-        return await _dbContext.Users.AnyAsync(u => u.Email == email);
+        return await _dbContext.Users
+            .AsNoTracking()
+            .AnyAsync(u => u.Email == email);
     }
     
-    public async Task Create(Models.User user)
+    public async Task Add(User user)
     {
         await _dbContext.Users.AddAsync(user);
+    }
+
+    public async Task<User?> GetByEmail(string email)
+    {
+        return await _dbContext.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using FicWriter.API.Infrastructure.Data;
+using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
 using FicWriter.API.Infrastructure.Security.Password;
-using FicWriter.API.Infrastructure.Security.Tokens.Generator;
+using FicWriter.API.Infrastructure.Security.Tokens.Access;
+using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
 using Microsoft.EntityFrameworkCore;
 
 namespace FicWriter.API.Infrastructure;
@@ -24,8 +26,9 @@ public static class InfrastructureDependencyInjection
     {
         services.AddDbContext<FicWriterDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
-            .UseSnakeCaseNamingConvention()
-            );
+                .EnableDetailedErrors()
+                .EnableSensitiveDataLogging()
+                .UseSnakeCaseNamingConvention());
     }
 
     private static void AddRepositories(IServiceCollection services)
@@ -33,6 +36,7 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserReadOnly, UserRepository>();
         services.AddScoped<IUserWriteOnly, UserRepository>();
+        services.AddScoped<ITokenWriteOnly, TokenRepository>();
     }
 
     private static void AddPasswordHasher(IServiceCollection services)
@@ -48,5 +52,7 @@ public static class InfrastructureDependencyInjection
         var audience = configuration["Jwt:Audience"]!;
 
         services.AddScoped<IAccessTokenGenerator>(options => new JwtTokenGenerator(key, expirationTime, issuer, audience));
+
+        services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
     }
 }
