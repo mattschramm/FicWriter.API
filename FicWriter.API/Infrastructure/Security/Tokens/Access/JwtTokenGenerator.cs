@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace FicWriter.API.Infrastructure.Security.Tokens.Generator;
+namespace FicWriter.API.Infrastructure.Security.Tokens.Access;
 
 public class JwtTokenGenerator(string key, uint expirationTime, string issuer, string audience) : IAccessTokenGenerator
 {

@@ -1,4 +1,4 @@
-﻿namespace FicWriter.API.Infrastructure.Security.Tokens.Generator;
+﻿namespace FicWriter.API.Infrastructure.Security.Tokens.Access;
 
 public interface IAccessTokenGenerator
 {
