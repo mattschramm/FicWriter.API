@@ -1,4 +1,5 @@
 ﻿using FicWriter.API.Infrastructure.Data.Repositories.Users;
+using FicWriter.API.Models;
 using Moq;
 
 namespace CommonTestUtils.Repositories;
@@ -16,6 +17,14 @@ public class UserReadOnlyBuilder
         _userReadOnlyMock
             .Setup(x => x.ExistsWithEmail(email))
             .ReturnsAsync(true);
+        return this;
+    }
+
+    public UserReadOnlyBuilder GetByEmail(User user)
+    {
+        _userReadOnlyMock
+            .Setup(x => x.GetByEmail(user.Email))
+            .ReturnsAsync(user);
         return this;
     }
 }

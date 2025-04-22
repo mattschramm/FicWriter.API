@@ -2,8 +2,7 @@
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 
-public interface ITokenWriteOnly
+public interface ITokenReadOnly
 {
-    Task Add(RefreshToken token);
-    Task Delete(Guid userId);
+    Task<RefreshToken?> Get(string token);
 }

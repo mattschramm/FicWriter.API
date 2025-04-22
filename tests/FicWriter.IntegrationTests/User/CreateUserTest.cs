@@ -7,7 +7,7 @@ namespace FicWriter.IntegrationTests.User;
 
 public class CreateUserTest : FicWriterFixture
 {
-    private const string URL = "/user";
+    private const string URL = "/user/register";
 
     public CreateUserTest(FicWriterWebApplicationFactory app) : base(app)
     {
@@ -26,7 +26,7 @@ public class CreateUserTest : FicWriterFixture
         using var responseData = await JsonDocument.ParseAsync(responseBody);
 
         responseData.RootElement.GetProperty("name").GetString().ShouldBe(request.Name);
-        responseData.RootElement.GetProperty("accessToken").EnumerateObject().ShouldNotBeEmpty();
+        responseData.RootElement.GetProperty("tokens").EnumerateObject().ShouldNotBeEmpty();
     }
 
     [Fact]

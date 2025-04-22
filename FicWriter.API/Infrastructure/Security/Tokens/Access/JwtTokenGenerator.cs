@@ -16,7 +16,7 @@ public class JwtTokenGenerator(string key, uint expirationTime, string issuer, s
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.Sid, guid.ToString())
+            new Claim(ClaimTypes.NameIdentifier, guid.ToString())
         };
 
         var token = new SecurityTokenDescriptor

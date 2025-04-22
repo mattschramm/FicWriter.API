@@ -4,6 +4,7 @@ using FicWriter.API.Infrastructure.Data.Repositories.Users;
 using FicWriter.API.Infrastructure.Security.Password;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
+using FicWriter.API.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace FicWriter.API.Infrastructure;
@@ -36,7 +37,12 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserReadOnly, UserRepository>();
         services.AddScoped<IUserWriteOnly, UserRepository>();
+        
         services.AddScoped<ITokenWriteOnly, TokenRepository>();
+        services.AddScoped<ITokenReadOnly, TokenRepository>();
+        services.AddScoped<ITokenUpdateOnly, TokenRepository>();
+
+        services.AddScoped<ICurrentUser, CurrentUser>();
     }
 
     private static void AddPasswordHasher(IServiceCollection services)
