@@ -1,5 +1,4 @@
 ﻿using FicWriter.API.Infrastructure.Security.Tokens.Access;
-using FicWriter.API.Infrastructure.Security.Tokens.Generator;
 
 namespace CommonTestUtils.Tokens;
 

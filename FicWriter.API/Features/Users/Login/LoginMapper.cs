@@ -1,7 +1,4 @@
-﻿using FicWriter.API.Features.Users.Shared;
-using FicWriter.API.Models;
-
-namespace FicWriter.API.Features.Users.Login;
+﻿namespace FicWriter.API.Features.Users.Login;
 
 public static class LoginMapper
 {

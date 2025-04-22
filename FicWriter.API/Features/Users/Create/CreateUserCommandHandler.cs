@@ -1,5 +1,4 @@
 ﻿using ErrorOr;
-using FicWriter.API.Features.Users.Shared;
 using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
@@ -7,6 +6,7 @@ using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.Password;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
+using FicWriter.API.Shared.User;
 using MediatR;
 
 namespace FicWriter.API.Features.Users.Create;
@@ -47,7 +47,14 @@ public class CreateUserCommandHandler(
         await _unitOfWork.Commit();
 
         var accessToken = _accessTokenGenerator.Generate(user.UserIdentifier);
-        var refreshToken = _refreshTokenGenerator.Generate(user.Id);
+        
+        var refreshToken = new Models.RefreshToken
+        {
+            Id = Guid.NewGuid(),
+            Token = _refreshTokenGenerator.Generate(),
+            UserId = user.Id,
+            ExpiresOnUtc = DateTime.UtcNow.AddDays(7)
+        };
 
         await _tokenWriteOnly.Add(refreshToken);
 

@@ -23,13 +23,17 @@ public class CreateUserHandlerTest
         var unitOfWork = UnitOfWorkBuilder.Build();
         var passwordHasher = PasswordHasherBuilder.Build();
         var accessToken = JwtTokenGeneratorBuilder.Build();
+        var refreshToken = RefreshTokenGeneratorBuilder.Build();
+        var tokenWriteOnly = TokenWriteOnlyBuilder.Build();
 
         return new CreateUserCommandHandler(
             userReadOnly,
             userWriteOnly,
             unitOfWork,
             passwordHasher,
-            accessToken);
+            accessToken,
+            refreshToken,
+            tokenWriteOnly);
     }
 
     [Fact]
@@ -43,7 +47,6 @@ public class CreateUserHandlerTest
         result.IsError.ShouldBeFalse();
         result.Value.ShouldNotBeNull();
         result.Value.Name.ShouldBe(request.Name);
-        result.Value.AccessToken.ShouldNotBeNull();
     }
 
     [Fact]

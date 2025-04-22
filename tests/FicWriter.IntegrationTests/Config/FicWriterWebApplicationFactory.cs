@@ -12,10 +12,13 @@ public class FicWriterWebApplicationFactory : WebApplicationFactory<Program>
 {
     private API.Models.User _user = default!;
     private string _password = string.Empty;
+    private RefreshToken _refreshToken = default!;
 
     public string GetUserPassword() => _password;
     public string GetUserName() => _user.Name;
     public string GetUserEmail() => _user.Email;
+    public string GetRefreshToken() => _refreshToken.Token;
+    public Guid GetUserIdentifier() => _user.UserIdentifier;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -51,7 +54,13 @@ public class FicWriterWebApplicationFactory : WebApplicationFactory<Program>
     {
         (_user, _password) = UserBuilder.Build();
 
+        _refreshToken = RefreshTokenBuilder.Build();
+        _refreshToken.UserId = _user.Id;
+        _refreshToken.User = _user;
+
         dbContext.Users.Add(_user);
+
+        dbContext.RefreshTokens.Add(_refreshToken);
 
         dbContext.SaveChanges();
     }

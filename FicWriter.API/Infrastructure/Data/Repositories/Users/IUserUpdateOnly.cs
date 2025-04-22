@@ -1,5 +1,8 @@
-﻿namespace FicWriter.API.Infrastructure.Data.Repositories.Users;
+﻿using FicWriter.API.Models;
+
+namespace FicWriter.API.Infrastructure.Data.Repositories.Users;
 
 public interface IUserUpdateOnly
 {
+    void Update(User user);
 }
