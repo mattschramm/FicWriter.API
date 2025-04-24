@@ -3,15 +3,15 @@ using System.Security.Claims;
 
 namespace FicWriter.API.Infrastructure.Security.Authorization;
 
-public class LoggedUserRequirement : IAuthorizationRequirement
+public class SameUserRequirement : IAuthorizationRequirement
 {
 }
 
-public class LoggedUserHandler : AuthorizationHandler<LoggedUserRequirement>
+public class SameUserHandler : AuthorizationHandler<SameUserRequirement>
 {
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
-        LoggedUserRequirement requirement)
+        SameUserRequirement requirement)
     {
         if (context.Resource is HttpContext httpContext)
         {
