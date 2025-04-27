@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace FicWriter.API.Models;
+﻿namespace FicWriter.API.Models;
 
 public class RefreshToken
 {

@@ -24,6 +24,13 @@ public class FicWriterFixture : IClassFixture<FicWriterWebApplicationFactory>
         return await _httpClient.DeleteAsync(url);
     }
 
+    protected async Task<HttpResponseMessage> DoGet(string url, string token = "")
+    {
+        AuthorizeRequest(token);
+
+        return await _httpClient.GetAsync(url);
+    }
+
     private void AuthorizeRequest(string token)
     {
         if (string.IsNullOrWhiteSpace(token))

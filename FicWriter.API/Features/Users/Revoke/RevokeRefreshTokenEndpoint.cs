@@ -16,7 +16,7 @@ public class RevokeRefreshTokenEndpoint() : IEndpoint
             var result = await Handle(id, mediator);
             return result;
         })
-            .RequireAuthorization("LoggedUser")
+            .RequireAuthorization("SameUser")
             .WithName("RevokeRefreshToken")
             .WithTags("Users");
     }

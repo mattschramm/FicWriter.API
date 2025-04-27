@@ -1,10 +1,14 @@
 using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure;
+using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Security.Authorization;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,15 +48,43 @@ builder.Services.AddAuthentication("Bearer")
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var userId = context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (!Guid.TryParse(userId, out var id))
+                {
+                    context.Fail("Invalid token");
+                    return;
+                }
+
+                var dbContext = context.HttpContext.RequestServices
+                    .GetRequiredService<FicWriterDbContext>();
+
+                var userExists = await dbContext.Users
+                    .AnyAsync(u => u.UserIdentifier == id);
+
+                if (!userExists)
+                {
+                    context.Fail("Invalid token");
+                    return;
+                }
+
+                context.Success();
+            }
+        };
     });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("LoggedUser", policy =>
+    .AddPolicy("SameUser", policy =>
     {
-        policy.Requirements.Add(new LoggedUserRequirement());
+        policy.Requirements.Add(new SameUserRequirement());
     });
 
-builder.Services.AddSingleton<IAuthorizationHandler, LoggedUserHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, SameUserHandler>();
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
