@@ -24,5 +24,7 @@ public class GetProfileHandlerTest
         var result = await handler.Handle(new GetProfileCommand(), CancellationToken.None);
 
         result.IsError.ShouldBeFalse();
+        result.Value.Name.ShouldBe(user.Name);
+        result.Value.Email.ShouldBe(user.Email);
     }
 }

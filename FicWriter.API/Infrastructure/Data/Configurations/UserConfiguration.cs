@@ -12,13 +12,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Name)
             .IsRequired()
-            .HasMaxLength(200);
+            .HasMaxLength(256);
 
         builder.Property(u => u.Email)
             .IsRequired()
             .HasMaxLength(256);
 
-        builder.HasIndex(u => u.Email).IsUnique();
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
 
         builder.Property(u => u.Password)
             .IsRequired();
@@ -27,6 +28,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(u => u.UserIdentifier)
+            .IsRequired();
+
+        builder.Property(u => u.IsActive)
+            .HasDefaultValue(true)
             .IsRequired();
     }
 }

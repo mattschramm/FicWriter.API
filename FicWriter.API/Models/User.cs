@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FicWriter.API.Models;
+﻿namespace FicWriter.API.Models;
 
 public class User
 {
@@ -11,4 +8,5 @@ public class User
     public string Password { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public Guid UserIdentifier { get; set; }
+    public bool IsActive { get; set; } = true;
 }
