@@ -1,32 +1,29 @@
 ﻿using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Validator;
-using FicWriter.API.Shared.User;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
-namespace FicWriter.API.Features.Users.Create;
+namespace FicWriter.API.Features.Works.Create;
 
-public sealed record CreateUserRequest(string Name, string Email, string Password);
+public record CreateWorkRequest(string Title, string Description);
 
-public class CreateUserEndpoint : IEndpoint
-{ 
+public class CreateWorkEndpoint : IEndpoint
+{
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/user/register", Handle)
-            .WithName("CreateUser")
-            .AllowAnonymous()
-            .Produces<UserResponse>(StatusCodes.Status200OK)
+        app.MapPost("/works", Handle)
+            .WithName("CreateWork")
+            .RequireAuthorization()
+            .Produces<CreateWorkResponse>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
-            .ProducesProblem(StatusCodes.Status409Conflict)
-            .WithTags("Users");
+            .WithTags("Works");
     }
 
     private async Task<IResult> Handle(
-        [FromBody] CreateUserRequest request,
+        CreateWorkRequest request,
         IMediator mediator,
-        IValidator<CreateUserRequest> validator)
+        IValidator<CreateWorkRequest> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
 
@@ -37,8 +34,12 @@ public class CreateUserEndpoint : IEndpoint
 
         var result = await mediator.Send(request.ToCommand());
 
+        /*return result.Match(
+            result => Results.CreatedAtRoute("GetWorkById", new { id = result.Id }, result),
+            errors => result.ToProblem());*/
+
         return result.Match(
-            result => Results.Ok(result),
+            result => Results.Created(string.Empty, result),
             errors => result.ToProblem());
     }
 }

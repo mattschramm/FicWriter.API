@@ -10,4 +10,6 @@ public class Work
     public bool IsActive { get; set; } = true;
     public bool IsArchived { get; set; } = false;
     public List<Draft> Drafts { get; set; } = [];
+    public long UserId { get; set; }
+    public User User { get; set; } = default!;
 }
