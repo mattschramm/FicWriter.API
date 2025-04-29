@@ -39,9 +39,11 @@ public static class InfrastructureDependencyInjection
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddScoped<IUserReadOnly, UserRepository>();
         services.AddScoped<IUserWriteOnly, UserRepository>();
-        
+        services.AddScoped<IUserUpdateOnly, UserRepository>();
+
         services.AddScoped<ITokenWriteOnly, TokenRepository>();
         services.AddScoped<ITokenReadOnly, TokenRepository>();
         services.AddScoped<ITokenUpdateOnly, TokenRepository>();

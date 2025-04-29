@@ -35,7 +35,7 @@ public class CreateUserCommandHandler(
     {
         if (await _userReadOnly.ExistsWithEmail(request.Email))
         {
-            return UserErrors.EmailAlreadyExists(request.Email);
+            return UserErrors.EmailAlreadyExists();
         }
 
         var hashedPassword = _passwordHasher.Hash(request.Password);
