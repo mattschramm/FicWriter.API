@@ -3,7 +3,6 @@ using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Validator;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Works.Create;
 

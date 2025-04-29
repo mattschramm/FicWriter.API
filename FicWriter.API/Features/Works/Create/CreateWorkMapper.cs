@@ -1,4 +1,6 @@
 ﻿using FicWriter.API.Models;
+using Microsoft.AspNetCore.Mvc;
+using Sqids;
 
 namespace FicWriter.API.Features.Works.Create;
 
@@ -16,5 +18,8 @@ public static class CreateWorkMapper
             UserId = userId,
         };
 
-    public static CreateWorkResponse ToResponse(this Work work) => new(work.Id, work.Title);
+    public static CreateWorkResponse ToResponse(this Work work, string encryptedId)
+    {
+        return new CreateWorkResponse(encryptedId, work.Title);
+    }
 }

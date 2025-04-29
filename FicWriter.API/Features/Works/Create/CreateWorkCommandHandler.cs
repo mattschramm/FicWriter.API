@@ -3,19 +3,24 @@ using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Services;
 using MediatR;
-using System.Text;
+using Sqids;
 
 namespace FicWriter.API.Features.Works.Create;
 
 public record CreateWorkCommand(string Title, string Description) : IRequest<ErrorOr<CreateWorkResponse>>;
 
-public record CreateWorkResponse(long Id, string Title);
+public record CreateWorkResponse(string Id, string Title);
 
-public class CreateWorkCommandHandler(IWorkWriteOnly workWriteOnly, IUnitOfWork unitOfWork, ICurrentUser currentUser) : IRequestHandler<CreateWorkCommand, ErrorOr<CreateWorkResponse>>
+public class CreateWorkCommandHandler(
+    IWorkWriteOnly workWriteOnly,
+    IUnitOfWork unitOfWork,
+    ICurrentUser currentUser,
+    SqidsEncoder<long> encoder) : IRequestHandler<CreateWorkCommand, ErrorOr<CreateWorkResponse>>
 {
     private readonly IWorkWriteOnly _workWriteOnly = workWriteOnly;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICurrentUser _currentUser = currentUser;
+    private readonly SqidsEncoder<long> _encoder = encoder;
 
     public async Task<ErrorOr<CreateWorkResponse>> Handle(CreateWorkCommand command, CancellationToken cancellationToken)
     {
@@ -23,10 +28,12 @@ public class CreateWorkCommandHandler(IWorkWriteOnly workWriteOnly, IUnitOfWork 
 
         var work = command.ToWork(user.Id);
 
+        var encryptedId = _encoder.Encode(work.Id);
+
         await _workWriteOnly.Create(work);
 
         await _unitOfWork.Commit();
 
-        return work.ToResponse();
+        return work.ToResponse(encryptedId);
     }
 }

@@ -71,7 +71,7 @@ public static class InfrastructureDependencyInjection
     private static void AddSqids(IServiceCollection services, IConfiguration configuration)
     {
         var alphabet = configuration["Sqids:Alphabet"]!;
-        var length = configuration.GetValue<int>("Sqids:Length");
+        var length = configuration.GetValue<int>("Sqids:MinLength");
 
         services.AddSingleton(new SqidsEncoder<long>(new()
         {
