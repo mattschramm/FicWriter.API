@@ -4,10 +4,10 @@ namespace FicWriter.API.Infrastructure.Errors;
 
 public static class UserErrors
 {
-    public static Error EmailAlreadyExists(string email) =>
+    public static Error EmailAlreadyExists() =>
         Error.Conflict(
             code: "User.EmailAlreadyExists",
-            description: $"User with email {email} already exists.");
+            description: $"User with provided email already exists.");
 
     public static Error InvalidCredentials() =>
         Error.Unauthorized(
