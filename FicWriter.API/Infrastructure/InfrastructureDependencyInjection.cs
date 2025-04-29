@@ -1,11 +1,14 @@
-﻿using FicWriter.API.Infrastructure.Data;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
+using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Security.Password;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
 using FicWriter.API.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using Sqids;
 
 namespace FicWriter.API.Infrastructure;
 
@@ -19,6 +22,7 @@ public static class InfrastructureDependencyInjection
         AddRepositories(services);
         AddPasswordHasher(services);
         AddTokenGenerator(services, configuration);
+        AddSqids(services, configuration);
 
         return services;
     }
@@ -43,6 +47,8 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<ITokenUpdateOnly, TokenRepository>();
 
         services.AddScoped<ICurrentUser, CurrentUser>();
+
+        services.AddScoped<IWorkWriteOnly, WorkRepository>();
     }
 
     private static void AddPasswordHasher(IServiceCollection services)
@@ -60,5 +66,17 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<IAccessTokenGenerator>(options => new JwtTokenGenerator(key, expirationTime, issuer, audience));
 
         services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
+    }
+
+    private static void AddSqids(IServiceCollection services, IConfiguration configuration)
+    {
+        var alphabet = configuration["Sqids:Alphabet"]!;
+        var length = configuration.GetValue<int>("Sqids:Length");
+
+        services.AddSingleton(new SqidsEncoder<long>(new()
+        {
+            Alphabet = alphabet,
+            MinLength = length,
+        }));
     }
 }

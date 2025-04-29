@@ -3,6 +3,7 @@ using System;
 using FicWriter.API.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FicWriter.API.Migrations
 {
     [DbContext(typeof(FicWriterDbContext))]
-    partial class FicWriterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250429162951_WorksAndDrafts")]
+    partial class WorksAndDrafts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

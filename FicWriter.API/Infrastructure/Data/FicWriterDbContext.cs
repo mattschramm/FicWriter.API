@@ -7,6 +7,8 @@ public class FicWriterDbContext(DbContextOptions<FicWriterDbContext> options) : 
 {
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
+    public DbSet<Work> Works { get; set; } = default!;
+    public DbSet<Draft> Drafts { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

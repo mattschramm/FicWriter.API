@@ -33,5 +33,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsActive)
             .HasDefaultValue(true)
             .IsRequired();
+
+        builder.HasMany(u => u.Works)
+            .WithOne(w => w.User)
+            .HasForeignKey(w => w.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

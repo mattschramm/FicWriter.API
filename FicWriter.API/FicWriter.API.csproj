@@ -12,6 +12,7 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
     <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Sqids" Version="3.1.0" />
 	  <Using Include="BCrypt.Net.BCrypt" Alias="BCryptNet" />
     <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
