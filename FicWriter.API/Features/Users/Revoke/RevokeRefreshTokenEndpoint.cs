@@ -1,6 +1,5 @@
 ﻿using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
-using FicWriter.API.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

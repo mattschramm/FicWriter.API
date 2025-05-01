@@ -77,6 +77,30 @@ builder.Services.AddAuthentication("Bearer")
                 }
 
                 context.Success();
+            },
+            
+            OnAuthenticationFailed = async context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+
+                string message;
+
+                if (context.Exception is SecurityTokenExpiredException)
+                {
+                    message = "Token expired";
+                }
+                else
+                {
+                    message = "Invalid token";
+                }
+
+                var result = new
+                {
+                    error = message
+                };
+
+                await context.Response.WriteAsJsonAsync(result);
             }
         };
     });

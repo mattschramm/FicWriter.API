@@ -1,24 +1,18 @@
 ﻿using FicWriter.API.Models;
 using FicWriter.API.Shared.Mapper;
-using Microsoft.AspNetCore.Authentication.BearerToken;
 using Sqids;
 
 namespace FicWriter.API.Features.Works.Get;
 
-public class GetWorkMapper : IFeatureMapper
+public class GetWorkMapper(SqidsEncoder<long> sqidsEncoder) : IFeatureMapper
 {
-    private readonly SqidsEncoder<long> _sqidsEncoder;
+    private readonly SqidsEncoder<long> _sqidsEncoder = sqidsEncoder;
 
-    public GetWorkMapper(SqidsEncoder<long> sqidsEncoder)
-    {
-        _sqidsEncoder = sqidsEncoder;
-    }
-
-    public GetWorkResponse ToResponse(GetWorkCommand command, GetWorkResponse response)
+    public GetWorkResponse ToResponse(Work work)
     {
         return new GetWorkResponse(
-            WorkId: _sqidsEncoder.Encode(command.WorkId),
-            Title: response.Title,
-            Description: response.Description);
+            WorkId: _sqidsEncoder.Encode(work.Id),
+            Title: work.Title,
+            Description: work.Description);
     }
 }

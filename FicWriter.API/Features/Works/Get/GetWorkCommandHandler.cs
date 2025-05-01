@@ -9,16 +9,11 @@ public record GetWorkCommand(long WorkId) : IRequest<ErrorOr<GetWorkResponse>>;
 
 public record GetWorkResponse(string WorkId, string Title, string Description);
 
-public class GetWorkCommandHandler : IRequestHandler<GetWorkCommand, ErrorOr<GetWorkResponse>>
+public class GetWorkCommandHandler(IWorkReadOnly workReadOnly, ICurrentUser currentUser, GetWorkMapper mapper) : IRequestHandler<GetWorkCommand, ErrorOr<GetWorkResponse>>
 {
-    private readonly IWorkReadOnly _workReadOnly;
-    private readonly ICurrentUser _currentUser;
-
-    public GetWorkCommandHandler(IWorkReadOnly workReadOnly, ICurrentUser currentUser)
-    {
-        _workReadOnly = workReadOnly;
-        _currentUser = currentUser;
-    }
+    private readonly IWorkReadOnly _workReadOnly = workReadOnly;
+    private readonly ICurrentUser _currentUser = currentUser;
+    private readonly GetWorkMapper _mapper = mapper;
 
     public async Task<ErrorOr<GetWorkResponse>> Handle(GetWorkCommand request, CancellationToken cancellationToken)
     {
@@ -29,10 +24,6 @@ public class GetWorkCommandHandler : IRequestHandler<GetWorkCommand, ErrorOr<Get
         if (work is null)
             return Error.NotFound(description: "Work not found");
 
-        //TEMP
-        return new GetWorkResponse(
-            WorkId: work.Id.ToString(),
-            Title: work.Title,
-            Description: work.Description);
+        return _mapper.ToResponse(work);
     }
 }
