@@ -1,13 +1,14 @@
 ﻿using ErrorOr;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Services;
+using FicWriter.API.Models;
 using MediatR;
 
 namespace FicWriter.API.Features.Works.Get;
 
 public record GetWorkCommand(long WorkId) : IRequest<ErrorOr<GetWorkResponse>>;
 
-public record GetWorkResponse(string WorkId, string Title, string Description);
+public record GetWorkResponse(string WorkId, string Title, string Description, List<Draft> Drafts);
 
 public class GetWorkCommandHandler(IWorkReadOnly workReadOnly, ICurrentUser currentUser, GetWorkMapper mapper) : IRequestHandler<GetWorkCommand, ErrorOr<GetWorkResponse>>
 {

@@ -13,6 +13,7 @@ public class GetWorkMapper(SqidsEncoder<long> sqidsEncoder) : IFeatureMapper
         return new GetWorkResponse(
             WorkId: _sqidsEncoder.Encode(work.Id),
             Title: work.Title,
-            Description: work.Description);
+            Description: work.Description,
+            Drafts: work.Drafts);
     }
 }
