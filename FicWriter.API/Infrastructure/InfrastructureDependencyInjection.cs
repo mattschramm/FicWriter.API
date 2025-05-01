@@ -51,6 +51,7 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<ICurrentUser, CurrentUser>();
 
         services.AddScoped<IWorkWriteOnly, WorkRepository>();
+        services.AddScoped<IWorkReadOnly, WorkRepository>();
     }
 
     private static void AddPasswordHasher(IServiceCollection services)

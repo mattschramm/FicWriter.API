@@ -20,7 +20,8 @@ public class CreateUserCommandHandler(
     IPasswordHasher passwordHasher,
     IAccessTokenGenerator accessTokenGenerator,
     IRefreshTokenGenerator refreshTokenGenerator,
-    ITokenWriteOnly tokenWriteOnly) 
+    ITokenWriteOnly tokenWriteOnly,
+    CreateUserMapper mapper) 
         : IRequestHandler<CreateUserCommand, ErrorOr<UserResponse>>
 {
     private readonly IUserReadOnly _userReadOnly = userReadOnly;
@@ -30,6 +31,7 @@ public class CreateUserCommandHandler(
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
     private readonly IRefreshTokenGenerator _refreshTokenGenerator = refreshTokenGenerator;
     private readonly ITokenWriteOnly _tokenWriteOnly = tokenWriteOnly;
+    private readonly CreateUserMapper _mapper = mapper;
 
     public async Task<ErrorOr<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
@@ -40,7 +42,8 @@ public class CreateUserCommandHandler(
 
         var hashedPassword = _passwordHasher.Hash(request.Password);
 
-        var user = request.ToUser(hashedPassword);
+        var user = _mapper.ToUser(request, hashedPassword);
+        user.UserIdentifier = Guid.NewGuid();
 
         await _userWriteOnly.Add(user);
 
@@ -60,6 +63,6 @@ public class CreateUserCommandHandler(
 
         await _unitOfWork.Commit();
 
-        return user.ToResponse(accessToken, refreshToken.Token);
+        return _mapper.ToResponse(user, accessToken, refreshToken.Token);
     }
 }

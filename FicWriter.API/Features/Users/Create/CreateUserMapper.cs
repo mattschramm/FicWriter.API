@@ -1,12 +1,11 @@
 ﻿using FicWriter.API.Models;
+using FicWriter.API.Shared.User;
 
 namespace FicWriter.API.Features.Users.Create;
 
-public static class CreateUserMapper
+public class CreateUserMapper : UserResponseMapper
 {
-    public static CreateUserCommand ToCommand(this CreateUserRequest request) => new(request.Name, request.Email, request.Password);
-
-    public static User ToUser(this CreateUserCommand command, string hashedPassword)
+    public User ToUser(CreateUserCommand command, string hashedPassword)
     {
         return new User
         {
@@ -14,7 +13,6 @@ public static class CreateUserMapper
             Email = command.Email,
             Password = hashedPassword,
             CreatedAt = DateTime.UtcNow,
-            UserIdentifier = Guid.NewGuid()
         };
     }
 }

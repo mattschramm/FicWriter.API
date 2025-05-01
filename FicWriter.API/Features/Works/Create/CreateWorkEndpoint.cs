@@ -6,8 +6,6 @@ using MediatR;
 
 namespace FicWriter.API.Features.Works.Create;
 
-public record CreateWorkRequest(string Title, string Description);
-
 public class CreateWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
@@ -21,9 +19,9 @@ public class CreateWorkEndpoint : IEndpoint
     }
 
     private async Task<IResult> Handle(
-        CreateWorkRequest request,
+        CreateWorkCommand request,
         IMediator mediator,
-        IValidator<CreateWorkRequest> validator)
+        IValidator<CreateWorkCommand> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
 
@@ -32,7 +30,7 @@ public class CreateWorkEndpoint : IEndpoint
             return Results.ValidationProblem(errors: validationResult.ToDictionary());
         }
 
-        var result = await mediator.Send(request.ToCommand());
+        var result = await mediator.Send(request);
 
         /*return result.Match(
             result => Results.CreatedAtRoute("GetWorkById", new { id = result.Id }, result),

@@ -23,7 +23,7 @@ public class AuthenticateUserTest : FicWriterFixture
     [Fact]
     public async Task Success()
     {
-        var request = new AuthenticateUserRequest(_refreshToken);
+        var request = new AuthenticateUserCommand(_refreshToken);
 
         var response = await DoPost(URL, request);
 
@@ -38,7 +38,7 @@ public class AuthenticateUserTest : FicWriterFixture
     [Fact]
     public async Task ShouldFail_RefreshTokenNotFound()
     {
-        var request = new AuthenticateUserRequest("invalidtoken");
+        var request = new AuthenticateUserCommand("invalidtoken");
 
         var response = await DoPost(URL, request);
 

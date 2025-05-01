@@ -17,13 +17,15 @@ public class AuthenticateUserCommandHandler(
     ITokenUpdateOnly tokenUpdateOnly,
     IUnitOfWork unitOfWork,
     IAccessTokenGenerator accessTokenGenerator,
-    IRefreshTokenGenerator refreshTokenGenerator) : IRequestHandler<AuthenticateUserCommand, ErrorOr<UserResponse>>
+    IRefreshTokenGenerator refreshTokenGenerator,
+    UserResponseMapper mapper) : IRequestHandler<AuthenticateUserCommand, ErrorOr<UserResponse>>
 {
     private readonly ITokenReadOnly _tokenReadOnly = tokenReadOnly;
     private readonly ITokenUpdateOnly _tokenUpdateOnly = tokenUpdateOnly;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
     private readonly IRefreshTokenGenerator _refreshTokenGenerator = refreshTokenGenerator;
+    private readonly UserResponseMapper _mapper = mapper;
 
     public async Task<ErrorOr<UserResponse>> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
     {
@@ -43,6 +45,6 @@ public class AuthenticateUserCommandHandler(
 
         await _unitOfWork.Commit();
 
-        return refreshToken.User.ToResponse(accessToken, refreshToken.Token);
+        return _mapper.ToResponse(refreshToken.User, accessToken, refreshToken.Token);
     }
 }

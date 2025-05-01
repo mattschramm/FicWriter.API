@@ -25,6 +25,7 @@ public class CreateUserHandlerTest
         var accessToken = JwtTokenGeneratorBuilder.Build();
         var refreshToken = RefreshTokenGeneratorBuilder.Build();
         var tokenWriteOnly = TokenWriteOnlyBuilder.Build();
+        var mapper = new CreateUserMapper();
 
         return new CreateUserCommandHandler(
             userReadOnly,
@@ -33,7 +34,8 @@ public class CreateUserHandlerTest
             passwordHasher,
             accessToken,
             refreshToken,
-            tokenWriteOnly);
+            tokenWriteOnly,
+            mapper);
     }
 
     [Fact]
@@ -42,7 +44,7 @@ public class CreateUserHandlerTest
         var request = CreateUserRequestBuilder.Build();
         var handler = CreateHandler();
 
-        var result = await handler.Handle(request.ToCommand(), CancellationToken.None);
+        var result = await handler.Handle(request, CancellationToken.None);
 
         result.IsError.ShouldBeFalse();
         result.Value.ShouldNotBeNull();
@@ -55,10 +57,10 @@ public class CreateUserHandlerTest
         var request = CreateUserRequestBuilder.Build();
         var handler = CreateHandler(request.Email);
 
-        var result = await handler.Handle(request.ToCommand(), CancellationToken.None);
+        var result = await handler.Handle(request, CancellationToken.None);
 
         result.IsError.ShouldBeTrue();
         result.FirstError.Code.ShouldBe("User.EmailAlreadyExists");
-        result.FirstError.Description.ShouldBe($"User with email {request.Email} already exists.");
+        result.FirstError.Description.ShouldBe($"User with provided email already exists.");
     }
 }

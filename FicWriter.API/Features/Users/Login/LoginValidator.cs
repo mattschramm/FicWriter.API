@@ -2,7 +2,7 @@
 
 namespace FicWriter.API.Features.Users.Login;
 
-public class LoginValidator : AbstractValidator<LoginRequest>
+public class LoginValidator : AbstractValidator<LoginCommand>
 {
     public LoginValidator()
     {
@@ -12,6 +12,7 @@ public class LoginValidator : AbstractValidator<LoginRequest>
             .WithMessage("Email is required.")
             .EmailAddress()
             .WithMessage("Must be a valid email");
+        
         RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("Password is required.");

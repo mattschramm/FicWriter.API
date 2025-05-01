@@ -2,7 +2,7 @@
 
 namespace FicWriter.API.Features.Works.Create;
 
-public class CreateWorkValidator : AbstractValidator<CreateWorkRequest>
+public class CreateWorkValidator : AbstractValidator<CreateWorkCommand>
 {
     public CreateWorkValidator()
     {

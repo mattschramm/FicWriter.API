@@ -5,10 +5,10 @@ namespace CommonTestUtils.Requests;
 
 public static class CreateUserRequestBuilder
 {
-    public static CreateUserRequest Build(int passwordLength = 10)
+    public static CreateUserCommand Build(int passwordLength = 10)
     {
-        var faker = new Faker<CreateUserRequest>()
-        .CustomInstantiator(f => new CreateUserRequest(
+        var faker = new Faker<CreateUserCommand>()
+        .CustomInstantiator(f => new CreateUserCommand(
             f.Person.FirstName,
             f.Internet.Email(firstName: f.Person.FirstName),
             f.Internet.Password(passwordLength)));

@@ -2,6 +2,7 @@ using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure;
 using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Security.Authorization;
+using FicWriter.API.Shared.Mapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,8 @@ builder.Services.AddMediatR(cfg =>
 });
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+builder.Services.AddMappers();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 

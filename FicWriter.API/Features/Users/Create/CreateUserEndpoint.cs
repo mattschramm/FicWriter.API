@@ -4,11 +4,8 @@ using FicWriter.API.Infrastructure.Validator;
 using FicWriter.API.Shared.User;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Users.Create;
-
-public sealed record CreateUserRequest(string Name, string Email, string Password);
 
 public class CreateUserEndpoint : IEndpoint
 { 
@@ -24,9 +21,9 @@ public class CreateUserEndpoint : IEndpoint
     }
 
     private async Task<IResult> Handle(
-        [FromBody] CreateUserRequest request,
+        CreateUserCommand request,
         IMediator mediator,
-        IValidator<CreateUserRequest> validator)
+        IValidator<CreateUserCommand> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
 
@@ -35,7 +32,7 @@ public class CreateUserEndpoint : IEndpoint
             return Results.ValidationProblem(errors: validationResult.ToDictionary());
         }
 
-        var result = await mediator.Send(request.ToCommand());
+        var result = await mediator.Send(request);
 
         return result.Match(
             result => Results.Ok(result),
