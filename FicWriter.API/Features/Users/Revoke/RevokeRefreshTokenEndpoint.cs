@@ -8,7 +8,6 @@ namespace FicWriter.API.Features.Users.Revoke;
 
 public class RevokeRefreshTokenEndpoint() : IEndpoint
 {
-
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapDelete("users/{id:guid}/refresh-token", async (Guid id, [FromServices] IMediator mediator) =>

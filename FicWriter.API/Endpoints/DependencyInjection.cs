@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace FicWriter.API.Endpoints;
 
-public static class EndpointExtensions
+public static class DependencyInjection
 {
     public static IServiceCollection AddEndpoints(this IServiceCollection services, Assembly assembly)
     {

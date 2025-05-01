@@ -23,7 +23,7 @@ public class LoginTest : FicWriterFixture
     [Fact]
     public async Task Success()
     {
-        var request = LoginRequestBuilder.Build(_email, _password);
+        var request = LoginCommandBuilder.Build(_email, _password);
 
         var response = await DoPost(URL, request);
 
@@ -39,7 +39,7 @@ public class LoginTest : FicWriterFixture
     [Fact]
     public async Task ShouldFail_UserNotFound()
     {
-        var request = LoginRequestBuilder.Build("invalid@email.com", "invalidpassword");
+        var request = LoginCommandBuilder.Build("invalid@email.com", "invalidpassword");
 
         var response = await DoPost(URL, request);
 
@@ -56,7 +56,7 @@ public class LoginTest : FicWriterFixture
     [Fact]
     public async Task ShouldFail_WithEmptyPassword()
     {
-        var request = LoginRequestBuilder.Build(_email, "");
+        var request = LoginCommandBuilder.Build(_email, "");
         var response = await DoPost(URL, request);
         
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);

@@ -6,8 +6,6 @@ using MediatR;
 
 namespace FicWriter.API.Features.Users.Update;
 
-public record UpdateUserRequest(string Name, string Email);
-
 public class UpdateUserEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
@@ -21,7 +19,7 @@ public class UpdateUserEndpoint : IEndpoint
             .WithTags("Users");
     }
 
-    private async Task<IResult> Handle(UpdateUserRequest request, IMediator mediator, IValidator<UpdateUserRequest> validator)
+    private async Task<IResult> Handle(UpdateUserCommand request, IMediator mediator, IValidator<UpdateUserCommand> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
 
@@ -30,7 +28,7 @@ public class UpdateUserEndpoint : IEndpoint
             return Results.ValidationProblem(errors: validationResult.ToDictionary());
         }
 
-        var result = await mediator.Send(request.ToCommand());
+        var result = await mediator.Send(request);
 
         return result.Match(
             result => Results.NoContent(),

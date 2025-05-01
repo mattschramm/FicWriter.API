@@ -2,7 +2,7 @@
 
 namespace FicWriter.API.Features.Users.Update;
 
-public class UpdateUserValidator : AbstractValidator<UpdateUserRequest>
+public class UpdateUserValidator : AbstractValidator<UpdateUserCommand>
 {
     public UpdateUserValidator()
     {

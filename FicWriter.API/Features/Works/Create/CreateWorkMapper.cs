@@ -1,14 +1,14 @@
 ﻿using FicWriter.API.Models;
-using Microsoft.AspNetCore.Mvc;
+using FicWriter.API.Shared.Mapper;
 using Sqids;
 
 namespace FicWriter.API.Features.Works.Create;
 
-public static class CreateWorkMapper
+public class CreateWorkMapper(SqidsEncoder<long> encoder) : IFeatureMapper
 {
-    public static CreateWorkCommand ToCommand(this CreateWorkRequest request) => new(request.Title, request.Description);
+    private readonly SqidsEncoder<long> _encoder = encoder;
 
-    public static Work ToWork(this CreateWorkCommand command, long userId) =>
+    public Work ToWork(CreateWorkCommand command, long userId) =>
         new()
         {
             Title = command.Title,
@@ -18,8 +18,9 @@ public static class CreateWorkMapper
             UserId = userId,
         };
 
-    public static CreateWorkResponse ToResponse(this Work work, string encryptedId)
+    public CreateWorkResponse ToResponse(Work work)
     {
-        return new CreateWorkResponse(encryptedId, work.Title);
+        var encryptedId = _encoder.Encode(work.Id);
+        return new(encryptedId, work.Title);
     }
 }

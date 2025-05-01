@@ -4,6 +4,7 @@ using CommonTestUtils.Services;
 using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Users.Login;
 using FicWriter.API.Models;
+using FicWriter.API.Shared.User;
 using Shouldly;
 
 namespace FicWriter.FunctionalTests.User;
@@ -25,8 +26,9 @@ public class LoginHandlerTest
         var unitOfWork = UnitOfWorkBuilder.Build();
         var accessToken = JwtTokenGeneratorBuilder.Build();
         var refreshToken = RefreshTokenGeneratorBuilder.Build();
+        var mapper = new UserResponseMapper();
 
-        return new LoginCommandHandler(userReadOnly, passwordHasher, accessToken, refreshToken, tokenWriteOnly, unitOfWork);
+        return new LoginCommandHandler(userReadOnly, passwordHasher, accessToken, refreshToken, tokenWriteOnly, unitOfWork, mapper);
     }
 
     [Fact]

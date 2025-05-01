@@ -1,7 +1,9 @@
-﻿namespace FicWriter.API.Shared.User;
+﻿using FicWriter.API.Shared.Mapper;
 
-public static class UserResponseMapper
+namespace FicWriter.API.Shared.User;
+
+public class UserResponseMapper : IFeatureMapper
 {
-    public static UserResponse ToResponse(this Models.User user, string accessToken, string refreshToken) 
+    public UserResponse ToResponse(Models.User user, string accessToken, string refreshToken) 
         => new(user.Name, new Tokens(accessToken, refreshToken));
 }

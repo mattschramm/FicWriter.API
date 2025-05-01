@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Users.Login;
 
-public record LoginRequest(string Email, string Password);
-
 public class LoginEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
@@ -23,7 +21,7 @@ public class LoginEndpoint : IEndpoint
             .WithTags("Users");
     }
 
-    public async Task<IResult> Handle([FromBody] LoginRequest request, IMediator mediator, IValidator<LoginRequest> validator)
+    public async Task<IResult> Handle(LoginCommand request, IMediator mediator, IValidator<LoginCommand> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
 
@@ -32,7 +30,7 @@ public class LoginEndpoint : IEndpoint
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var result = await mediator.Send(request.ToCommand());
+        var result = await mediator.Send(request);
 
         return result.Match(
             result => Results.Ok(result),

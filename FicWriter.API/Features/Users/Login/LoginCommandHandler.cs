@@ -6,6 +6,7 @@ using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.Password;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
+using FicWriter.API.Models;
 using FicWriter.API.Shared.User;
 using MediatR;
 
@@ -19,7 +20,8 @@ public class LoginCommandHandler(
     IAccessTokenGenerator accessTokenGenerator,
     IRefreshTokenGenerator refreshTokenGenerator,
     ITokenWriteOnly tokenWriteOnly,
-    IUnitOfWork unitOfWork) : IRequestHandler<LoginCommand, ErrorOr<UserResponse>>
+    IUnitOfWork unitOfWork,
+    UserResponseMapper mapper) : IRequestHandler<LoginCommand, ErrorOr<UserResponse>>
 {
     private readonly IUserReadOnly _userReadOnly = userReadOnly;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
@@ -27,6 +29,7 @@ public class LoginCommandHandler(
     private readonly IRefreshTokenGenerator _refreshTokenGenerator = refreshTokenGenerator;
     private readonly ITokenWriteOnly _tokenWriteOnly = tokenWriteOnly;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly UserResponseMapper _mapper = mapper;
 
     public async Task<ErrorOr<UserResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
@@ -39,7 +42,7 @@ public class LoginCommandHandler(
 
         var accessToken = _accessTokenGenerator.Generate(user.UserIdentifier);
         
-        var refreshToken = new Models.RefreshToken
+        var refreshToken = new RefreshToken
         {
             Id = Guid.NewGuid(),
             Token = _refreshTokenGenerator.Generate(),
@@ -51,6 +54,6 @@ public class LoginCommandHandler(
         
         await _unitOfWork.Commit();
 
-        return user.ToResponse(accessToken, refreshToken.Token);
+        return _mapper.ToResponse(user, accessToken, refreshToken.Token);
     }
 }

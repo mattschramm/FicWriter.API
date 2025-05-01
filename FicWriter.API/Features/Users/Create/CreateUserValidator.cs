@@ -2,7 +2,7 @@
 
 namespace FicWriter.API.Features.Users.Create;
 
-public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+public class CreateUserValidator : AbstractValidator<CreateUserCommand>
 {
     public CreateUserValidator()
     {

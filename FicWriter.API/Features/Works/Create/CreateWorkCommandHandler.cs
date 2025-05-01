@@ -15,25 +15,23 @@ public class CreateWorkCommandHandler(
     IWorkWriteOnly workWriteOnly,
     IUnitOfWork unitOfWork,
     ICurrentUser currentUser,
-    SqidsEncoder<long> encoder) : IRequestHandler<CreateWorkCommand, ErrorOr<CreateWorkResponse>>
+    CreateWorkMapper mapper) : IRequestHandler<CreateWorkCommand, ErrorOr<CreateWorkResponse>>
 {
     private readonly IWorkWriteOnly _workWriteOnly = workWriteOnly;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICurrentUser _currentUser = currentUser;
-    private readonly SqidsEncoder<long> _encoder = encoder;
+    private readonly CreateWorkMapper _mapper = mapper;
 
     public async Task<ErrorOr<CreateWorkResponse>> Handle(CreateWorkCommand command, CancellationToken cancellationToken)
     {
         var user = await _currentUser.GetCurrentUser();
 
-        var work = command.ToWork(user.Id);
-
-        var encryptedId = _encoder.Encode(work.Id);
+        var work = _mapper.ToWork(command, user.Id);
 
         await _workWriteOnly.Create(work);
 
         await _unitOfWork.Commit();
 
-        return work.ToResponse(encryptedId);
+        return _mapper.ToResponse(work);
     }
 }
