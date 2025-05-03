@@ -1,5 +1,4 @@
-﻿using FicWriter.API.Binders;
-using FicWriter.API.Infrastructure.Data;
+﻿using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;

@@ -5,7 +5,7 @@ using Sqids;
 
 namespace FicWriter.API.Features.Works.Get;
 
-public class GetWorkEndpoint : IEndpoint
+public class GetWorkByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -15,22 +15,22 @@ public class GetWorkEndpoint : IEndpoint
             IMediator mediator) =>
         {
             var decryptedId = encoder.Decode(id).Single();
-            
+
             var result = await Handle(decryptedId, mediator);
             return result;
         })
             .RequireAuthorization()
-            .Produces<GetWorkResponse>(StatusCodes.Status200OK)
+            .Produces<GetWorkByIdResponse>(StatusCodes.Status200OK)
             .WithName("GetWorkById")
             .WithTags("Works");
     }
 
     private static async Task<IResult> Handle(long id, IMediator mediator)
     {
-        var command = new GetWorkCommand(id);
-        
+        var command = new GetWorkByIdCommand(id);
+
         var result = await mediator.Send(command);
-        
+
         return result.Match(
             work => Results.Ok(work),
             error => result.ToProblem());
