@@ -3,7 +3,6 @@ using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Services;
 using MediatR;
-using Sqids;
 
 namespace FicWriter.API.Features.Works.Create;
 

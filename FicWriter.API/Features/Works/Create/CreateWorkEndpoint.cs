@@ -32,12 +32,8 @@ public class CreateWorkEndpoint : IEndpoint
 
         var result = await mediator.Send(request);
 
-        /*return result.Match(
-            result => Results.CreatedAtRoute("GetWorkById", new { id = result.Id }, result),
-            errors => result.ToProblem());*/
-
         return result.Match(
-            result => Results.Created(string.Empty, result),
+            result => Results.CreatedAtRoute("GetWorkById", new { id = result.Id }, result),
             errors => result.ToProblem());
     }
 }
