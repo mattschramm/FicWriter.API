@@ -14,6 +14,8 @@ public class GetWorkByIdMapper(SqidsEncoder<long> sqidsEncoder) : IFeatureMapper
             Id: _sqidsEncoder.Encode(work.Id),
             Title: work.Title,
             Description: work.Description,
-            Drafts: work.Drafts);
+            Drafts: work.Drafts,
+            CreatedAt: work.CreatedAt,
+            UpdatedAt: work.UpdatedAt);
     }
 }

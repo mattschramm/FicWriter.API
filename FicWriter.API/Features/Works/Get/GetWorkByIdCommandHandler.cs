@@ -8,7 +8,8 @@ namespace FicWriter.API.Features.Works.Get;
 
 public record GetWorkByIdCommand(long Id) : IRequest<ErrorOr<GetWorkByIdResponse>>;
 
-public record GetWorkByIdResponse(string Id, string Title, string Description, List<Draft> Drafts);
+public record GetWorkByIdResponse(string Id, string Title, string Description, DateTime CreatedAt, 
+                                  DateTime UpdatedAt, List<Draft> Drafts);
 
 public class GetWorkByIdCommandHandler(IWorkReadOnly workReadOnly, ICurrentUser currentUser, GetWorkByIdMapper mapper) : IRequestHandler<GetWorkByIdCommand, ErrorOr<GetWorkByIdResponse>>
 {
