@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
+using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Services;
 using MediatR;
 
@@ -22,7 +23,7 @@ public class UpdateWorkCommandHandler(IWorkUpdateOnly workUpdateOnly, ICurrentUs
 
         if (work is null)
         {
-            return Error.NotFound(description: $"Work not found.");
+            return WorkErrors.WorkNotFound();
         }
 
         work.Title = request.Title;
