@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
+using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Services;
 using FicWriter.API.Models;
 using MediatR;
@@ -24,7 +25,7 @@ public class GetWorkByIdCommandHandler(IWorkReadOnly workReadOnly, ICurrentUser 
         var work = await _workReadOnly.GetById(currentUser, request.Id);
 
         if (work is null)
-            return Error.NotFound(description: "Work not found");
+            return WorkErrors.WorkNotFound();
 
         return _mapper.ToResponse(work);
     }

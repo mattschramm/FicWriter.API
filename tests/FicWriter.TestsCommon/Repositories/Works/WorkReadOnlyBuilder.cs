@@ -1,8 +1,8 @@
 ﻿using FicWriter.API.Infrastructure.Data.Repositories.Works;
-using FicWriter.API.Models;
 using Moq;
+using FicWriter.API.Models;
 
-namespace CommonTestUtils.Repositories;
+namespace CommonTestUtils.Repositories.Works;
 
 public class WorkReadOnlyBuilder
 {

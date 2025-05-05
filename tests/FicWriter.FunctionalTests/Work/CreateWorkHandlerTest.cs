@@ -1,5 +1,6 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
+using CommonTestUtils.Repositories.Works;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
 using FicWriter.API.Features.Works.Create;
@@ -27,7 +28,7 @@ public class CreateWorkHandlerTest
     public async Task Success()
     {
         var user = UserBuilder.Build().user;
-        var request = CreateWorkRequestBuilder.Build();
+        var request = CreateWorkCommandBuilder.Build();
         var handler = CreateHandler(user);
 
         var result = await handler.Handle(request, CancellationToken.None);

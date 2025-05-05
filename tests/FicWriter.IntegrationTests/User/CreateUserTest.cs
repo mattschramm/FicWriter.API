@@ -16,7 +16,7 @@ public class CreateUserTest : FicWriterFixture
     [Fact]
     public async Task Success()
     {
-        var request = CreateUserRequestBuilder.Build();
+        var request = CreateUserCommandBuilder.Build();
 
         var response = await DoPost(URL, request);
 
@@ -32,7 +32,7 @@ public class CreateUserTest : FicWriterFixture
     [Fact]
     public async Task ShouldFaild_WithEmptyName()
     {
-        var request = CreateUserRequestBuilder.Build() with { Name = "" };
+        var request = CreateUserCommandBuilder.Build() with { Name = "" };
 
         var response = await DoPost(URL, request);
 

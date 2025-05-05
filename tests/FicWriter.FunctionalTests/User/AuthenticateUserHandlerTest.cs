@@ -1,5 +1,6 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
+using CommonTestUtils.Repositories.Tokens;
 using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Users.Auth;
 using FicWriter.API.Models;

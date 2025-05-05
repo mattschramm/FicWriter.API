@@ -1,7 +1,7 @@
 ﻿using FicWriter.API.Infrastructure.Data.Repositories.Users;
 using Moq;
 
-namespace CommonTestUtils.Repositories;
+namespace CommonTestUtils.Repositories.Users;
 
 public static class UserWriteOnlyBuilder
 {
