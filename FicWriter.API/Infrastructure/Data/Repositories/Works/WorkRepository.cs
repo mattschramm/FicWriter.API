@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Works;
 
-public class WorkRepository(FicWriterDbContext dbContext) : IWorkWriteOnly, IWorkReadOnly
+public class WorkRepository(FicWriterDbContext dbContext) : IWorkWriteOnly, IWorkReadOnly, IWorkUpdateOnly
 {
     private readonly FicWriterDbContext _dbContext = dbContext;
 
@@ -31,4 +31,9 @@ public class WorkRepository(FicWriterDbContext dbContext) : IWorkWriteOnly, IWor
         .AsNoTracking()
         .Include(w => w.Drafts)
         .FirstOrDefaultAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive && !w.IsArchived);
+    public async Task<Work?> GetWorkByIdWithTracking(User user, long id) => await _dbContext.Works
+        .Include(w => w.Drafts)
+        .FirstOrDefaultAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive && !w.IsArchived);
+
+    public void Update(Work work) => _dbContext.Works.Update(work);
 }
