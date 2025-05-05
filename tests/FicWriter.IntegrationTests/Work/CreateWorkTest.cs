@@ -20,7 +20,7 @@ public class CreateWorkTest : FicWriterFixture
     [Fact]
     public async Task Success()
     {
-        var request = CreateWorkRequestBuilder.Build();
+        var request = CreateWorkCommandBuilder.Build();
         var token = JwtTokenGeneratorBuilder.Build().Generate(_uniqueIdentifier);
 
         var response = await DoPost(URL, request, token);
@@ -38,7 +38,7 @@ public class CreateWorkTest : FicWriterFixture
     [Fact]
     public async Task Fail_TitleEmpty()
     {
-        var request = CreateWorkRequestBuilder.Build() with { Title = string.Empty };
+        var request = CreateWorkCommandBuilder.Build() with { Title = string.Empty };
         var token = JwtTokenGeneratorBuilder.Build().Generate(_uniqueIdentifier);
         
         var response = await DoPost(URL, request, token);

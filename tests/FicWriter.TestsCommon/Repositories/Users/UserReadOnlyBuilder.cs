@@ -2,7 +2,7 @@
 using FicWriter.API.Models;
 using Moq;
 
-namespace CommonTestUtils.Repositories;
+namespace CommonTestUtils.Repositories.Users;
 
 public class UserReadOnlyBuilder
 {

@@ -1,5 +1,6 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
+using CommonTestUtils.Repositories.Tokens;
 using FicWriter.API.Features.Users.Revoke;
 using Shouldly;
 

@@ -1,8 +1,8 @@
 ﻿using FicWriter.API.Infrastructure.Data.Repositories.Users;
-using FicWriter.API.Models;
 using Moq;
+using FicWriter.API.Models;
 
-namespace CommonTestUtils.Repositories;
+namespace CommonTestUtils.Repositories.Users;
 
 public class UserUpdateOnlyBuilder
 {

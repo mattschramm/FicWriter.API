@@ -1,9 +1,10 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
+using CommonTestUtils.Repositories.Tokens;
+using CommonTestUtils.Repositories.Users;
 using CommonTestUtils.Services;
 using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Users.Login;
-using FicWriter.API.Models;
 using FicWriter.API.Shared.User;
 using Shouldly;
 

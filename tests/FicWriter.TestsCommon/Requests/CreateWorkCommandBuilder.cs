@@ -3,7 +3,7 @@ using FicWriter.API.Features.Works.Create;
 
 namespace CommonTestUtils.Requests;
 
-public static class CreateWorkRequestBuilder
+public static class CreateWorkCommandBuilder
 {
     public static CreateWorkCommand Build()
     {

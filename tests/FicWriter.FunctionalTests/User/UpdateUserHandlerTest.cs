@@ -1,5 +1,6 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
+using CommonTestUtils.Repositories.Users;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
 using ErrorOr;

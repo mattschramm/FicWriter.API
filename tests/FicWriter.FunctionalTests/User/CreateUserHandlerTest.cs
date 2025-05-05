@@ -1,4 +1,6 @@
 ﻿using CommonTestUtils.Repositories;
+using CommonTestUtils.Repositories.Tokens;
+using CommonTestUtils.Repositories.Users;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
 using CommonTestUtils.Tokens;
@@ -41,7 +43,7 @@ public class CreateUserHandlerTest
     [Fact]
     public async Task Success()
     {
-        var request = CreateUserRequestBuilder.Build();
+        var request = CreateUserCommandBuilder.Build();
         var handler = CreateHandler();
 
         var result = await handler.Handle(request, CancellationToken.None);
@@ -54,7 +56,7 @@ public class CreateUserHandlerTest
     [Fact]
     public async Task ShouldFail_EmailAlreadyExists()
     {
-        var request = CreateUserRequestBuilder.Build();
+        var request = CreateUserCommandBuilder.Build();
         var handler = CreateHandler(request.Email);
 
         var result = await handler.Handle(request, CancellationToken.None);
