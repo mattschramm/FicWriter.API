@@ -14,7 +14,7 @@ public class UpdateWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/works/{id}", async (
+        app.MapPut("/work/{id}", async (
             [FromRoute] string id,
             [FromBody] UpdateWorkRequest request,
             IMediator mediator,

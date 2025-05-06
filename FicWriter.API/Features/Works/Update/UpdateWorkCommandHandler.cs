@@ -1,5 +1,5 @@
 ﻿using ErrorOr;
-using FicWriter.API.Infrastructure.Data;
+using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Services;
@@ -9,9 +9,9 @@ namespace FicWriter.API.Features.Works.Update;
 
 public record UpdateWorkCommand(long Id, string Title, string Description) : IRequest<ErrorOr<Success>>;
 
-public class UpdateWorkCommandHandler(IWorkUpdateOnly workUpdateOnly, ICurrentUser currentUser, IUnitOfWork unitOfWork) : IRequestHandler<UpdateWorkCommand, ErrorOr<Success>>
+public class UpdateWorkCommandHandler(IWorkRepository repository, ICurrentUser currentUser, IUnitOfWork unitOfWork) : IRequestHandler<UpdateWorkCommand, ErrorOr<Success>>
 {
-    private readonly IWorkUpdateOnly _workUpdateOnly = workUpdateOnly;
+    private readonly IWorkRepository _repository = repository;
     private readonly ICurrentUser _currentUser = currentUser;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
@@ -19,7 +19,7 @@ public class UpdateWorkCommandHandler(IWorkUpdateOnly workUpdateOnly, ICurrentUs
     {
         var user = await _currentUser.GetCurrentUser();
 
-        var work = await _workUpdateOnly.GetWorkByIdWithTracking(user, request.Id);
+        var work = await _repository.GetWorkByIdWithTracking(user, request.Id);
 
         if (work is null)
         {
@@ -30,7 +30,7 @@ public class UpdateWorkCommandHandler(IWorkUpdateOnly workUpdateOnly, ICurrentUs
         work.Description = request.Description;
         work.UpdatedAt = DateTime.UtcNow;
 
-        _workUpdateOnly.Update(work);
+        _repository.Update(work);
 
         await _unitOfWork.Commit();
 

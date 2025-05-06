@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
-using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
+using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
@@ -13,23 +13,21 @@ namespace FicWriter.API.Features.Users.Auth;
 public record AuthenticateUserCommand(string RefreshToken) : IRequest<ErrorOr<UserResponse>>;
 
 public class AuthenticateUserCommandHandler(
-    ITokenReadOnly tokenReadOnly,
-    ITokenUpdateOnly tokenUpdateOnly,
+    ITokenRepository repository,
     IUnitOfWork unitOfWork,
     IAccessTokenGenerator accessTokenGenerator,
     IRefreshTokenGenerator refreshTokenGenerator,
     UserResponseMapper mapper) : IRequestHandler<AuthenticateUserCommand, ErrorOr<UserResponse>>
 {
-    private readonly ITokenReadOnly _tokenReadOnly = tokenReadOnly;
-    private readonly ITokenUpdateOnly _tokenUpdateOnly = tokenUpdateOnly;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
     private readonly IRefreshTokenGenerator _refreshTokenGenerator = refreshTokenGenerator;
     private readonly UserResponseMapper _mapper = mapper;
+    private readonly ITokenRepository _repository = repository;
 
     public async Task<ErrorOr<UserResponse>> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = await _tokenReadOnly.Get(request.RefreshToken);
+        var refreshToken = await _repository.Get(request.RefreshToken);
 
         if (refreshToken is null || refreshToken.IsExpired())
         {
@@ -41,7 +39,7 @@ public class AuthenticateUserCommandHandler(
         refreshToken.Token = _refreshTokenGenerator.Generate();
         refreshToken.ExpiresOnUtc = DateTime.UtcNow.AddDays(7);
 
-        _tokenUpdateOnly.Update(refreshToken);
+        _repository.Update(refreshToken);
 
         await _unitOfWork.Commit();
 

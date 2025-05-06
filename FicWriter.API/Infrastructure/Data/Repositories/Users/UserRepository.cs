@@ -4,7 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Users;
 
-public class UserRepository(FicWriterDbContext dbContext) : IUserReadOnly, IUserWriteOnly, IUserUpdateOnly
+public class UserRepository(FicWriterDbContext dbContext) : IUserRepository
 {
     private readonly FicWriterDbContext _dbContext = dbContext;
 
@@ -34,6 +34,6 @@ public class UserRepository(FicWriterDbContext dbContext) : IUserReadOnly, IUser
     
     public void Update(User user) => _dbContext.Users.Update(user);
     
-    public async Task<User?> GetUserByIdWithTracking(long id) => await _dbContext.Users
+    public async Task<User?> GetByIdWithTracking(long id) => await _dbContext.Users
         .FirstOrDefaultAsync(u => u.Id == id);
 }

@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
-using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
+using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.Password;
@@ -14,28 +14,26 @@ namespace FicWriter.API.Features.Users.Create;
 public sealed record CreateUserCommand(string Name, string Email, string Password) : IRequest<ErrorOr<UserResponse>>;
 
 public class CreateUserCommandHandler(
-    IUserReadOnly userReadOnly,
-    IUserWriteOnly userWriteOnly,
+    ITokenRepository tokenRepository,
+    IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IPasswordHasher passwordHasher,
     IAccessTokenGenerator accessTokenGenerator,
     IRefreshTokenGenerator refreshTokenGenerator,
-    ITokenWriteOnly tokenWriteOnly,
     CreateUserMapper mapper) 
         : IRequestHandler<CreateUserCommand, ErrorOr<UserResponse>>
 {
-    private readonly IUserReadOnly _userReadOnly = userReadOnly;
-    private readonly IUserWriteOnly _userWriteOnly = userWriteOnly;
+    private readonly ITokenRepository _tokenRepository = tokenRepository;
+    private readonly IUserRepository _userRepository = userRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
     private readonly IRefreshTokenGenerator _refreshTokenGenerator = refreshTokenGenerator;
-    private readonly ITokenWriteOnly _tokenWriteOnly = tokenWriteOnly;
     private readonly CreateUserMapper _mapper = mapper;
 
     public async Task<ErrorOr<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        if (await _userReadOnly.ExistsWithEmail(request.Email))
+        if (await _userRepository.ExistsWithEmail(request.Email))
         {
             return UserErrors.EmailAlreadyExists();
         }
@@ -45,7 +43,7 @@ public class CreateUserCommandHandler(
         var user = _mapper.ToUser(request, hashedPassword);
         user.UserIdentifier = Guid.NewGuid();
 
-        await _userWriteOnly.Add(user);
+        await _userRepository.Add(user);
 
         await _unitOfWork.Commit();
 
@@ -59,7 +57,7 @@ public class CreateUserCommandHandler(
             ExpiresOnUtc = DateTime.UtcNow.AddDays(7)
         };
 
-        await _tokenWriteOnly.Add(refreshToken);
+        await _tokenRepository.Add(refreshToken);
 
         await _unitOfWork.Commit();
 

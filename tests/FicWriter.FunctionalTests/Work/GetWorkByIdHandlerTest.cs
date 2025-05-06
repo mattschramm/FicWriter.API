@@ -1,5 +1,5 @@
 ﻿using CommonTestUtils.Models;
-using CommonTestUtils.Repositories.Works;
+using CommonTestUtils.Repositories;
 using CommonTestUtils.Services;
 using FicWriter.API.Features.Works.Get;
 using Shouldly;
@@ -10,18 +10,18 @@ public class GetWorkByIdHandlerTest
 {
     private static GetWorkByIdCommandHandler CreateHandler(API.Models.User user, API.Models.Work? work = null)
     {
-        var workReadOnlyBuilder = new WorkReadOnlyBuilder();
+        var workRepositoryBuilder = new WorkRepositoryBuilder();
 
         if (work is not null)
         {
-            workReadOnlyBuilder.GetById(work, user);
+            workRepositoryBuilder.GetById(work, user);
         }
 
-        var workReadOnly = workReadOnlyBuilder.Build();
+        var workRepository = workRepositoryBuilder.Build();
         var currentUser = CurrentUserBuilder.Build(user);
         var mapper = new GetWorkByIdMapper(SqidsEncoderBuilder.Build());
 
-        return new GetWorkByIdCommandHandler(workReadOnly, currentUser, mapper);
+        return new GetWorkByIdCommandHandler(workRepository, currentUser, mapper);
     }
 
     [Fact]
