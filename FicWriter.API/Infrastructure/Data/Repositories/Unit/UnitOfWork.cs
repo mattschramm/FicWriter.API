@@ -1,4 +1,4 @@
-﻿namespace FicWriter.API.Infrastructure.Data;
+﻿namespace FicWriter.API.Infrastructure.Data.Repositories.Unit;
 
 public class UnitOfWork(FicWriterDbContext context) : IUnitOfWork
 {

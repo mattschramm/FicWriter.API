@@ -1,6 +1,5 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
-using CommonTestUtils.Repositories.Works;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
 using FicWriter.API.Features.Works.Create;
@@ -12,7 +11,7 @@ public class CreateWorkHandlerTest
 {
     private static CreateWorkCommandHandler CreateHandler(API.Models.User user)
     {
-        var workWriteOnly = WorkWriteOnlyBuilder.Build();
+        var workWriteOnly = new WorkRepositoryBuilder().Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var currentUser = CurrentUserBuilder.Build(user);
         var mapper = new CreateWorkMapper(SqidsEncoderBuilder.Build());

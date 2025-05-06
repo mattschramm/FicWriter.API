@@ -1,10 +1,8 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
-using CommonTestUtils.Repositories.Works;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
 using FicWriter.API.Features.Works.Update;
-using FicWriter.API.Models;
 using Shouldly;
 
 namespace FicWriter.FunctionalTests.Work;
@@ -13,14 +11,14 @@ public class UpdateWorkHandlerTest
 {
     private static UpdateWorkCommandHandler CreateHandler(API.Models.User user, API.Models.Work? work = null)
     {
-        var workUpdateOnlyBuilder = new WorkUpdateOnlyBuilder();
+        var workRepositoryBuilder = new WorkRepositoryBuilder();
 
         if (work is not null)
         {
-            workUpdateOnlyBuilder.GetWorkByIdWithTracking(user, work);
+            workRepositoryBuilder.GetWorkByIdWithTracking(work, user);
         }
 
-        var workUpdateOnly = workUpdateOnlyBuilder.Build();
+        var workUpdateOnly = workRepositoryBuilder.Build();
         var currentUser = CurrentUserBuilder.Build(user);
         var unitOfWork = UnitOfWorkBuilder.Build();
 

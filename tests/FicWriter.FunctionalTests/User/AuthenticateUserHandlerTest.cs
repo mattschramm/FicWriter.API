@@ -1,6 +1,5 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
-using CommonTestUtils.Repositories.Tokens;
 using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Users.Auth;
 using FicWriter.API.Models;
@@ -11,21 +10,19 @@ namespace FicWriter.FunctionalTests.User;
 
 public class AuthenticateUserHandlerTest
 {
-    private AuthenticateUserCommandHandler CreateHandler(RefreshToken token)
+    private static AuthenticateUserCommandHandler CreateHandler(RefreshToken token)
     {
-        var tokenReadOnly = new TokenReadOnlyBuilder()
+        var tokenRepository = new TokenRepositoryBuilder()
             .Get(token)
             .Build();
 
-        var tokenUpdateOnly = TokenUpdateOnlyBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var accessTokenGenerator = JwtTokenGeneratorBuilder.Build();
         var refreshTokenGenerator = RefreshTokenGeneratorBuilder.Build();
         var mapper = new UserResponseMapper();
 
         return new AuthenticateUserCommandHandler(
-            tokenReadOnly,
-            tokenUpdateOnly,
+            tokenRepository,
             unitOfWork,
             accessTokenGenerator,
             refreshTokenGenerator,

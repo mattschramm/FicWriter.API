@@ -1,6 +1,5 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
-using CommonTestUtils.Repositories.Users;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
 using ErrorOr;
@@ -14,22 +13,19 @@ public class UpdateUserHandlerTest
 {
     private static UpdateUserCommandHandler CreateHandler(API.Models.User user, string? email = null)
     {
-        var userUpdateOnly = new UserUpdateOnlyBuilder().GetUserByIdWithTracking(user).Build();
-        var unitOfWork = UnitOfWorkBuilder.Build();
-        var currentUser = CurrentUserBuilder.Build(user);
-
-        var userReadOnlyBuilder = new UserReadOnlyBuilder();
+        var userRepositoryBuilder = new UserRepositoryBuilder();
 
         if (!string.IsNullOrEmpty(email))
         {
-            userReadOnlyBuilder.ExistsWithEmail(email);
+            userRepositoryBuilder.ExistsWithEmail(email);
         }
 
-        return new UpdateUserCommandHandler(
-            userUpdateOnly,
-            unitOfWork,
-            currentUser,
-            userReadOnlyBuilder.Build());
+        var userRepository = userRepositoryBuilder.GetByIdWithTracking(user).Build();
+
+        var unitOfWork = UnitOfWorkBuilder.Build();
+        var currentUser = CurrentUserBuilder.Build(user);
+
+        return new UpdateUserCommandHandler(userRepository, unitOfWork, currentUser);
     }
 
     [Fact]

@@ -1,4 +1,4 @@
-﻿using FicWriter.API.Infrastructure.Data;
+﻿using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using Moq;
 
 namespace CommonTestUtils.Repositories;

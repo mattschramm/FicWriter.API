@@ -1,6 +1,4 @@
-﻿using CommonTestUtils.Models;
-using CommonTestUtils.Repositories;
-using CommonTestUtils.Repositories.Tokens;
+﻿using CommonTestUtils.Repositories;
 using FicWriter.API.Features.Users.Revoke;
 using Shouldly;
 
@@ -10,10 +8,10 @@ public class RevokeRefreshTokenHandlerTest
 {
     private static RevokeRefreshTokenCommandHandler CreateHandler()
     {
-        var tokenWriteOnly = TokenWriteOnlyBuilder.Build();
+        var tokenRepository = new TokenRepositoryBuilder().Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
 
-        return new RevokeRefreshTokenCommandHandler(tokenWriteOnly, unitOfWork);
+        return new RevokeRefreshTokenCommandHandler(tokenRepository, unitOfWork);
     }
 
     [Fact]

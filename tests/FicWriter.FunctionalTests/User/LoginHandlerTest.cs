@@ -1,7 +1,5 @@
 ﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
-using CommonTestUtils.Repositories.Tokens;
-using CommonTestUtils.Repositories.Users;
 using CommonTestUtils.Services;
 using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Users.Login;
@@ -14,22 +12,29 @@ public class LoginHandlerTest
 {
     private static LoginCommandHandler CreateHandler(API.Models.User? user = null)
     {
-        var userReadOnlyBuilder = new UserReadOnlyBuilder();
+        var userRepositoryBuilder = new UserRepositoryBuilder();
         
         if (user is not null)
         {
-            userReadOnlyBuilder.GetByEmail(user);
+            userRepositoryBuilder.GetByEmail(user);
         }
         
-        var userReadOnly = userReadOnlyBuilder.Build();
+        var userRepository = userRepositoryBuilder.Build();
         var passwordHasher = PasswordHasherBuilder.Build();
-        var tokenWriteOnly = TokenWriteOnlyBuilder.Build();
+        var tokenRepository = new TokenRepositoryBuilder().Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var accessToken = JwtTokenGeneratorBuilder.Build();
         var refreshToken = RefreshTokenGeneratorBuilder.Build();
         var mapper = new UserResponseMapper();
 
-        return new LoginCommandHandler(userReadOnly, passwordHasher, accessToken, refreshToken, tokenWriteOnly, unitOfWork, mapper);
+        return new LoginCommandHandler(
+            tokenRepository,
+            userRepository,
+            passwordHasher,
+            accessToken,
+            refreshToken,
+            unitOfWork,
+            mapper);
     }
 
     [Fact]

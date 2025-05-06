@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Works;
 
-public class WorkRepository(FicWriterDbContext dbContext) : IWorkWriteOnly, IWorkReadOnly, IWorkUpdateOnly
+public class WorkRepository(FicWriterDbContext dbContext) : IWorkRepository
 {
     private readonly FicWriterDbContext _dbContext = dbContext;
 

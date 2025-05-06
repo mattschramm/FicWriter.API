@@ -1,6 +1,4 @@
 ﻿using CommonTestUtils.Repositories;
-using CommonTestUtils.Repositories.Tokens;
-using CommonTestUtils.Repositories.Users;
 using CommonTestUtils.Requests;
 using CommonTestUtils.Services;
 using CommonTestUtils.Tokens;
@@ -13,30 +11,28 @@ public class CreateUserHandlerTest
 {
     private static CreateUserCommandHandler CreateHandler(string? email = null)
     {
-        var userReadOnlyBuilder = new UserReadOnlyBuilder();
+        var userRepositoryBuilder = new UserRepositoryBuilder();
 
         if (!string.IsNullOrEmpty(email))
         {
-            userReadOnlyBuilder.ExistsWithEmail(email);
+            userRepositoryBuilder.ExistsWithEmail(email);
         }
 
-        var userReadOnly = userReadOnlyBuilder.Build();
-        var userWriteOnly = UserWriteOnlyBuilder.Build();
+        var userRepository = userRepositoryBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var passwordHasher = PasswordHasherBuilder.Build();
         var accessToken = JwtTokenGeneratorBuilder.Build();
         var refreshToken = RefreshTokenGeneratorBuilder.Build();
-        var tokenWriteOnly = TokenWriteOnlyBuilder.Build();
+        var tokenRepository = new TokenRepositoryBuilder().Build();
         var mapper = new CreateUserMapper();
 
         return new CreateUserCommandHandler(
-            userReadOnly,
-            userWriteOnly,
+            tokenRepository,
+            userRepository,
             unitOfWork,
             passwordHasher,
             accessToken,
             refreshToken,
-            tokenWriteOnly,
             mapper);
     }
 

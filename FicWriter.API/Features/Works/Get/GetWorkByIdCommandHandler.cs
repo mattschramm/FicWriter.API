@@ -12,9 +12,9 @@ public record GetWorkByIdCommand(long Id) : IRequest<ErrorOr<GetWorkByIdResponse
 public record GetWorkByIdResponse(string Id, string Title, string Description, DateTime CreatedAt, DateTime UpdatedAt,
                                   List<Draft> Drafts, List<Genre> Genres, List<Tag> Tags);
 
-public class GetWorkByIdCommandHandler(IWorkReadOnly workReadOnly, ICurrentUser currentUser, GetWorkByIdMapper mapper) : IRequestHandler<GetWorkByIdCommand, ErrorOr<GetWorkByIdResponse>>
+public class GetWorkByIdCommandHandler(IWorkRepository repository, ICurrentUser currentUser, GetWorkByIdMapper mapper) : IRequestHandler<GetWorkByIdCommand, ErrorOr<GetWorkByIdResponse>>
 {
-    private readonly IWorkReadOnly _workReadOnly = workReadOnly;
+    private readonly IWorkRepository _repository = repository;
     private readonly ICurrentUser _currentUser = currentUser;
     private readonly GetWorkByIdMapper _mapper = mapper;
 
@@ -22,7 +22,7 @@ public class GetWorkByIdCommandHandler(IWorkReadOnly workReadOnly, ICurrentUser 
     {
         var currentUser = await _currentUser.GetCurrentUser();
 
-        var work = await _workReadOnly.GetById(currentUser, request.Id);
+        var work = await _repository.GetById(currentUser, request.Id);
 
         if (work is null)
             return WorkErrors.WorkNotFound();

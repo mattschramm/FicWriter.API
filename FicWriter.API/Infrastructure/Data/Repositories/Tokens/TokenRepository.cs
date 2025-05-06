@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 
-public class TokenRepository(FicWriterDbContext dbContext) : ITokenWriteOnly, ITokenReadOnly, ITokenUpdateOnly
+public class TokenRepository(FicWriterDbContext dbContext) : ITokenRepository
 {
     private readonly FicWriterDbContext _dbContext = dbContext;
 

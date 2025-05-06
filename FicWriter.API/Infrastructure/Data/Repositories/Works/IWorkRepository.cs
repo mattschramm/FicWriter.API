@@ -2,8 +2,12 @@
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Works;
 
-public interface IWorkReadOnly
+public interface IWorkRepository
 {
     Task<Work?> GetById(User user, long id);
     Task<bool> Exists(User user, long id);
+    void Update(Work work);
+    Task<Work?> GetWorkByIdWithTracking(User user, long id);
+    Task Create(Work work);
+    Task Delete(long id);
 }
