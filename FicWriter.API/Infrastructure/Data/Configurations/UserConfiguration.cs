@@ -15,8 +15,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(256);
 
         builder.Property(u => u.Email)
-            .IsRequired()
-            .HasMaxLength(256);
+            .IsRequired();
 
         builder.HasIndex(u => u.Email)
             .IsUnique();
@@ -33,6 +32,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsActive)
             .HasDefaultValue(true)
             .IsRequired();
+
+        builder.Property(u => u.DeletedAt)
+            .IsRequired(false)
+            .HasDefaultValue(null);
 
         builder.HasMany(u => u.Works)
             .WithOne(w => w.User)

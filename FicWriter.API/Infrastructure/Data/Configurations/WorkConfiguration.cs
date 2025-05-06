@@ -12,17 +12,21 @@ public class WorkConfiguration : IEntityTypeConfiguration<Work>
 
         builder.Property(w => w.Title)
             .IsRequired()
-            .HasMaxLength(256);
+            .HasMaxLength(500);
 
         builder.Property(w => w.Description)
             .IsRequired()
-            .HasMaxLength(1000);
+            .HasMaxLength(2000);
 
         builder.Property(w => w.CreatedAt)
             .IsRequired();
 
         builder.Property(w => w.UpdatedAt)
             .IsRequired();
+
+        builder.Property(w => w.DeletedAt)
+            .IsRequired(false)
+            .HasDefaultValue(null);
 
         builder.Property(w => w.IsActive)
             .HasDefaultValue(true)
@@ -36,5 +40,31 @@ public class WorkConfiguration : IEntityTypeConfiguration<Work>
             .WithOne(d => d.Work)
             .HasForeignKey(d => d.WorkId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.OwnsMany(w => w.Genres, ownedNavigationBuilder =>
+        {
+            ownedNavigationBuilder.ToTable("genres");
+            
+            ownedNavigationBuilder.HasKey("WorkId", "GenreType");
+            
+            ownedNavigationBuilder.WithOwner().HasForeignKey("WorkId");
+            
+            ownedNavigationBuilder.Property(g => g.GenreType)
+                .HasConversion<string>()
+                .IsRequired();
+        });
+
+        builder.OwnsMany(w => w.Tags, ownedNavigationBuilder =>
+        {
+            ownedNavigationBuilder.ToTable("tags");
+
+            ownedNavigationBuilder.HasKey("WorkId", "Content");
+
+            ownedNavigationBuilder.WithOwner().HasForeignKey("WorkId");
+
+            ownedNavigationBuilder.Property(t => t.Content)
+                .IsRequired()
+                .HasMaxLength(128);
+        });
     }
 }

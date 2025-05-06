@@ -9,8 +9,8 @@ public class UpdateUserValidator : AbstractValidator<UpdateUserCommand>
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("Name is required.")
-            .MaximumLength(100)
-            .WithMessage("Name must not exceed 50 characters.");
+            .MaximumLength(256)
+            .WithMessage("Name must not exceed 256 characters.");
 
         RuleFor(x => x.Email)
             .Cascade(CascadeMode.Stop)

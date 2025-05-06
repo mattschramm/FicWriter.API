@@ -1,6 +1,5 @@
 ﻿using FicWriter.API.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Works;
 
@@ -20,6 +19,7 @@ public class WorkRepository(FicWriterDbContext dbContext) : IWorkWriteOnly, IWor
         if (work is not null)
         {
             work.IsActive = false;
+            work.DeletedAt = DateTime.UtcNow;
         }
     }
 
@@ -31,6 +31,7 @@ public class WorkRepository(FicWriterDbContext dbContext) : IWorkWriteOnly, IWor
         .AsNoTracking()
         .Include(w => w.Drafts)
         .FirstOrDefaultAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive && !w.IsArchived);
+    
     public async Task<Work?> GetWorkByIdWithTracking(User user, long id) => await _dbContext.Works
         .Include(w => w.Drafts)
         .FirstOrDefaultAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive && !w.IsArchived);

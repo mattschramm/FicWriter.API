@@ -2,11 +2,12 @@
 using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Services;
+using FicWriter.API.Models;
 using MediatR;
 
 namespace FicWriter.API.Features.Works.Create;
 
-public record CreateWorkCommand(string Title, string Description) : IRequest<ErrorOr<CreateWorkResponse>>;
+public record CreateWorkCommand(string Title, string Description, List<Genre> Genres, List<Tag> Tags) : IRequest<ErrorOr<CreateWorkResponse>>;
 
 public record CreateWorkResponse(string Id, string Title);
 

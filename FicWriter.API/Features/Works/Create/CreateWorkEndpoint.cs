@@ -10,7 +10,7 @@ public class CreateWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/works", Handle)
+        app.MapPost("/work", Handle)
             .WithName("CreateWork")
             .RequireAuthorization()
             .Produces<CreateWorkResponse>(StatusCodes.Status201Created)

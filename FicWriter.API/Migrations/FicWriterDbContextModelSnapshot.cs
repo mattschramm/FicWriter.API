@@ -41,8 +41,8 @@ namespace FicWriter.API.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("title");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -109,10 +109,13 @@ namespace FicWriter.API.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("email");
 
                     b.Property<bool>("IsActive")
@@ -159,10 +162,14 @@ namespace FicWriter.API.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
                         .HasColumnName("description");
 
                     b.Property<bool>("IsActive")
@@ -179,8 +186,8 @@ namespace FicWriter.API.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("title");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -232,6 +239,51 @@ namespace FicWriter.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_works_users_user_id");
+
+                    b.OwnsMany("FicWriter.API.Models.Genre", "Genres", b1 =>
+                        {
+                            b1.Property<long>("WorkId")
+                                .HasColumnType("bigint")
+                                .HasColumnName("work_id");
+
+                            b1.Property<string>("GenreType")
+                                .HasColumnType("text")
+                                .HasColumnName("genre_type");
+
+                            b1.HasKey("WorkId", "GenreType")
+                                .HasName("pk_genres");
+
+                            b1.ToTable("genres", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("WorkId")
+                                .HasConstraintName("fk_genres_works_work_id");
+                        });
+
+                    b.OwnsMany("FicWriter.API.Models.Tag", "Tags", b1 =>
+                        {
+                            b1.Property<long>("WorkId")
+                                .HasColumnType("bigint")
+                                .HasColumnName("work_id");
+
+                            b1.Property<string>("Content")
+                                .HasMaxLength(128)
+                                .HasColumnType("character varying(128)")
+                                .HasColumnName("content");
+
+                            b1.HasKey("WorkId", "Content")
+                                .HasName("pk_tags");
+
+                            b1.ToTable("tags", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("WorkId")
+                                .HasConstraintName("fk_tags_works_work_id");
+                        });
+
+                    b.Navigation("Genres");
+
+                    b.Navigation("Tags");
 
                     b.Navigation("User");
                 });
