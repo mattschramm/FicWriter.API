@@ -10,7 +10,7 @@ public class DeleteWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/works/{id}", (string id, IMediator mediator, SqidsEncoder<long> encoder) =>
+        app.MapDelete("/work/{id}", (string id, IMediator mediator, SqidsEncoder<long> encoder) =>
         {
             var decryptedId = encoder.Decode(id).Single();
 

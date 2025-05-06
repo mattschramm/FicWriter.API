@@ -16,6 +16,8 @@ public class CreateWorkMapper(SqidsEncoder<long> encoder) : IFeatureMapper
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             UserId = userId,
+            Genres = [.. command.Genres.Distinct()],
+            Tags = [.. command.Tags.Distinct()],
         };
 
     public CreateWorkResponse ToResponse(Work work)

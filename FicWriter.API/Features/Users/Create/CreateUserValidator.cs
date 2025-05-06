@@ -9,14 +9,16 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("Name is required.")
-            .MaximumLength(100)
-            .WithMessage("Name must be less than 100 characters.");
+            .MaximumLength(256)
+            .WithMessage("Name must be less than 256 characters.");
+
         RuleFor(x => x.Email)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .WithMessage("Email is required.")
             .EmailAddress()
             .WithMessage("Email is not valid.");
+
         RuleFor(x => x.Password)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()

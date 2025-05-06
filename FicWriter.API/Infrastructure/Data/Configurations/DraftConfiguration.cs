@@ -14,7 +14,7 @@ public class DraftConfiguration : IEntityTypeConfiguration<Draft>
 
         builder.Property(d => d.Title)
             .IsRequired()
-            .HasMaxLength(256);
+            .HasMaxLength(500);
 
         builder.Property(d => d.CreatedAt)
             .IsRequired();

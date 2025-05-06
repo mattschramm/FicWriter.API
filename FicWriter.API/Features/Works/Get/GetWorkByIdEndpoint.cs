@@ -9,7 +9,7 @@ public class GetWorkByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/works/{id}", async (
+        app.MapGet("/work/{id}", async (
             string id,
             SqidsEncoder<long> encoder,
             IMediator mediator) =>
