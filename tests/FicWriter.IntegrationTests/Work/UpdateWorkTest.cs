@@ -10,8 +10,6 @@ public class UpdateWorkTest : FicWriterFixture
 {
     private const string URL = "/work";
 
-    private readonly string _Title;
-    private readonly string _Description;
     private readonly string _workId;
     private readonly Guid _userIdentifier;
     
