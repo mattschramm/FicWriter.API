@@ -20,7 +20,9 @@ public class GetDashboardValidator : AbstractValidator<GetDashboardCommand>
 
         RuleForEach(x => x.Tags)
             .MaximumLength(64)
-            .WithMessage("Tag length must be less than or equal to 50 characters.");
+            .WithMessage("Tag length must be less than or equal to 64 characters.")
+            .NotEmpty()
+            .WithMessage("Tag cannot be empty.");
 
         RuleFor(x => x.Order)
             .IsInEnum()

@@ -1,4 +1,5 @@
 ﻿using FicWriter.API.Endpoints;
+using FicWriter.API.Enums;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Validator;
 using FluentValidation;
@@ -8,7 +9,7 @@ using Sqids;
 
 namespace FicWriter.API.Features.Works.Update;
 
-public record UpdateWorkRequest(string Title, string Description);
+public record UpdateWorkRequest(string Title, string Description, List<Genres> Genres, List<string> Tags);
 
 public class UpdateWorkEndpoint : IEndpoint
 {
@@ -43,7 +44,7 @@ public class UpdateWorkEndpoint : IEndpoint
             return Results.ValidationProblem(errors: validationResult.ToDictionary());
         }
 
-        var command = new UpdateWorkCommand(id, request.Title, request.Description);
+        var command = new UpdateWorkCommand(id, request.Title, request.Description, request.Genres, request.Tags);
 
         var result = await mediator.Send(command);
 
