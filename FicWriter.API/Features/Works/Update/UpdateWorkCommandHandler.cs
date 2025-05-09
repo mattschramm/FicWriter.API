@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using FicWriter.API.Enums;
 using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Errors;
@@ -7,13 +8,14 @@ using MediatR;
 
 namespace FicWriter.API.Features.Works.Update;
 
-public record UpdateWorkCommand(long Id, string Title, string Description) : IRequest<ErrorOr<Success>>;
+public record UpdateWorkCommand(long Id, string Title, string Description, List<Genres> Genres, List<string> Tags) : IRequest<ErrorOr<Success>>;
 
-public class UpdateWorkCommandHandler(IWorkRepository repository, ICurrentUser currentUser, IUnitOfWork unitOfWork) : IRequestHandler<UpdateWorkCommand, ErrorOr<Success>>
+public class UpdateWorkCommandHandler(IWorkRepository repository, ICurrentUser currentUser, IUnitOfWork unitOfWork, UpdateWorkMapper mapper) : IRequestHandler<UpdateWorkCommand, ErrorOr<Success>>
 {
     private readonly IWorkRepository _repository = repository;
     private readonly ICurrentUser _currentUser = currentUser;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly UpdateWorkMapper _mapper = mapper;
 
     public async Task<ErrorOr<Success>> Handle(UpdateWorkCommand request, CancellationToken cancellationToken)
     {
@@ -26,9 +28,7 @@ public class UpdateWorkCommandHandler(IWorkRepository repository, ICurrentUser c
             return WorkErrors.WorkNotFound();
         }
 
-        work.Title = request.Title;
-        work.Description = request.Description;
-        work.UpdatedAt = DateTime.UtcNow;
+        _mapper.ToUpdatedWork(work, request);
 
         _repository.Update(work);
 
