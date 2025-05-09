@@ -1,4 +1,5 @@
-﻿using FicWriter.API.Models;
+﻿using FicWriter.API.Enums;
+using FicWriter.API.Models;
 using FicWriter.API.Shared.Mapper;
 using Sqids;
 
@@ -16,8 +17,8 @@ public class CreateWorkMapper(SqidsEncoder<long> encoder) : IFeatureMapper
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             UserId = userId,
-            Genres = [.. command.Genres.Distinct()],
-            Tags = [.. command.Tags.Distinct()],
+            Genres = ToGenres(command.Genres),
+            Tags = ToTags(command.Tags),
         };
 
     public CreateWorkResponse ToResponse(Work work)
@@ -25,4 +26,16 @@ public class CreateWorkMapper(SqidsEncoder<long> encoder) : IFeatureMapper
         var encryptedId = _encoder.Encode(work.Id);
         return new(encryptedId, work.Title);
     }
+
+    private static List<Genre> ToGenres(List<Genres> genres) =>
+        genres.Select(g => new Genre
+        {
+            GenreType = g,
+        }).ToList();
+
+    private static List<Tag> ToTags(List<string> tags) =>
+        tags.Select(tag => new Tag
+        {
+            Content = tag
+        }).ToList();
 }
