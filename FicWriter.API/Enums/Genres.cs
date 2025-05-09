@@ -1,5 +1,8 @@
-﻿namespace FicWriter.API.Enums;
+﻿using System.Text.Json.Serialization;
 
+namespace FicWriter.API.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Genres
 {
     None = 0,
@@ -15,5 +18,6 @@ public enum Genres
     Comedy = 10,
     Drama = 11,
     NoFiction = 12,
-    Poetry = 13
+    Poetry = 13,
+    Fanfiction = 14,
 }
