@@ -16,8 +16,8 @@ public class AuthenticateUserTest : FicWriterFixture
 
     public AuthenticateUserTest(FicWriterWebApplicationFactory app) : base(app)
     {
-        _name = app.GetUserName();
-        _refreshToken = app.GetRefreshToken();
+        _name = app.UserName;
+        _refreshToken = app.RefreshToken;
     }
 
     [Fact]

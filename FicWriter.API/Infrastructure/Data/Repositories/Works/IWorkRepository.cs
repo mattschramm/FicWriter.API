@@ -1,5 +1,4 @@
-﻿using FicWriter.API.Enums;
-using FicWriter.API.Features.Works.Dashboard;
+﻿using FicWriter.API.Features.Works.Dashboard;
 using FicWriter.API.Models;
 
 namespace FicWriter.API.Infrastructure.Data.Repositories.Works;

@@ -13,8 +13,8 @@ public record GetDashboardCommand(
     [FromQuery] int PageSize,
     [FromQuery] string? Title,
     [FromQuery(Name = "genre")] Genres[]? Genres,
-    [FromQuery(Name = "tag")] string[]? Tags,
-    [FromQuery(Name = "order")] Orders? Order) : IRequest<ErrorOr<GetDashboardResponse>>;
+    [FromQuery] string[]? Tags,
+    [FromQuery] Orders? Order) : IRequest<ErrorOr<GetDashboardResponse>>;
 
 public record GetWorksResponse(string Id, string Title, string ShortDescription, 
     DateTime UpdatedAt, List<Genres> Genres, List<TagResponse> Tags);

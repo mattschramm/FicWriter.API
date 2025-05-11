@@ -15,16 +15,18 @@ public class FicWriterWebApplicationFactory : WebApplicationFactory<Program>
     private string _password = string.Empty;
     private RefreshToken _refreshToken = default!;
     private API.Models.Work _work = default!;
+    private List<API.Models.Work> _works = [];
 
-    public string GetUserPassword() => _password;
-    public string GetUserName() => _user.Name;
-    public string GetUserEmail() => _user.Email;
-    public string GetRefreshToken() => _refreshToken.Token;
-    public Guid GetUserIdentifier() => _user.UserIdentifier;
-    public string GetWorkTitle() => _work.Title;
-    public string GetWorkDescription() => _work.Description;
-    public string GetEncryptedWorkId() => SqidsEncoderBuilder.Build().Encode(_work.Id);
-    public long GetWorkId() => _work.Id;
+    public string UserPassword => _password;
+    public string UserName => _user.Name;
+    public string UserEmail => _user.Email;
+    public string RefreshToken => _refreshToken.Token;
+    public Guid UserIdentifier => _user.UserIdentifier;
+    public string WorkTitle => _work.Title;
+    public string WorkDescription => _work.Description;
+    public string EncryptedWorkId => SqidsEncoderBuilder.Build().Encode(_work.Id);
+    public long WorkId => _work.Id;
+    public List<API.Models.Work> Works => _works;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -66,11 +68,16 @@ public class FicWriterWebApplicationFactory : WebApplicationFactory<Program>
 
         _work = WorkBuilder.Build(_user);
 
+        _works = [];
+        _works.Add(_work);
+        _works.Add(WorkBuilder.Build(_user, id: 2));
+        _works.Add(WorkBuilder.Build(_user, id: 3));
+
         dbContext.Users.Add(_user);
 
         dbContext.RefreshTokens.Add(_refreshToken);
 
-        dbContext.Works.Add(_work);
+        dbContext.Works.AddRange(_works);
 
         dbContext.SaveChanges();
     }

@@ -14,7 +14,7 @@ public class CreateWorkTest : FicWriterFixture
 
     public CreateWorkTest(FicWriterWebApplicationFactory app) : base(app)
     {
-        _uniqueIdentifier = app.GetUserIdentifier();
+        _uniqueIdentifier = app.UserIdentifier;
     }
 
     [Fact]

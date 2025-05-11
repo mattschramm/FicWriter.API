@@ -15,9 +15,9 @@ public class GetProfileTest : FicWriterFixture
 
     public GetProfileTest(FicWriterWebApplicationFactory app) : base(app)
     {
-        _name = app.GetUserName();
-        _email = app.GetUserEmail();
-        _userIdentifier = app.GetUserIdentifier();
+        _name = app.UserName;
+        _email = app.UserEmail;
+        _userIdentifier = app.UserIdentifier;
     }
 
     [Fact]
