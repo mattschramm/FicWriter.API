@@ -15,9 +15,9 @@ public class LoginTest : FicWriterFixture
 
     public LoginTest(FicWriterWebApplicationFactory app) : base(app)
     {
-        _name = app.GetUserName();
-        _password = app.GetUserPassword();
-        _email = app.GetUserEmail();
+        _name = app.UserName;
+        _password = app.UserPassword;
+        _email = app.UserEmail;
     }
 
     [Fact]

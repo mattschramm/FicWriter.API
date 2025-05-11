@@ -1,11 +1,14 @@
 using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure;
 using FicWriter.API.Infrastructure.Data;
+using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.Authorization;
 using FicWriter.API.Shared.Mapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
@@ -128,6 +131,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseBindingExceptionHandler();
 
 app.UseHttpsRedirection();
 
