@@ -21,8 +21,9 @@ public class UpdateWorkHandlerTest
         var workUpdateOnly = workRepositoryBuilder.Build();
         var currentUser = CurrentUserBuilder.Build(user);
         var unitOfWork = UnitOfWorkBuilder.Build();
+        var workUpdateMapper = new UpdateWorkMapper();
 
-        return new UpdateWorkCommandHandler(workUpdateOnly, currentUser, unitOfWork);
+        return new UpdateWorkCommandHandler(workUpdateOnly, currentUser, unitOfWork, workUpdateMapper);
     }
 
     [Fact]

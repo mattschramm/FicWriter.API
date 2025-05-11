@@ -15,10 +15,8 @@ public class UpdateWorkTest : FicWriterFixture
     
     public UpdateWorkTest(FicWriterWebApplicationFactory app) : base(app)
     {
-        _Title = app.GetWorkTitle();
-        _Description = app.GetWorkDescription();
-        _workId = app.GetEncryptedWorkId();
-        _userIdentifier = app.GetUserIdentifier();
+        _workId = app.EncryptedWorkId;
+        _userIdentifier = app.UserIdentifier;
     }
 
     [Fact]
@@ -26,7 +24,7 @@ public class UpdateWorkTest : FicWriterFixture
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(_userIdentifier);
 
-        var request = new UpdateWorkRequest("New Title", "New Description");
+        var request = new UpdateWorkRequest("New Title", "New Description", [], []);
 
         var response = await DoPut($"{URL}/{_workId}", request, token);
 
@@ -47,7 +45,7 @@ public class UpdateWorkTest : FicWriterFixture
     public async Task Fail_WorkNotFound()
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(_userIdentifier);
-        var request = new UpdateWorkRequest("New Title", "New Description");
+        var request = new UpdateWorkRequest("New Title", "New Description", [], []);
         
         var response = await DoPut($"{URL}/invalidId", request, token);
         

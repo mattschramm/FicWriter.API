@@ -17,10 +17,10 @@ public class GetWorkByIdTest : FicWriterFixture
 
     public GetWorkByIdTest(FicWriterWebApplicationFactory app) : base(app)
     {
-        _workId = app.GetEncryptedWorkId();
-        _workTitle = app.GetWorkTitle();
-        _workDescription = app.GetWorkDescription();
-        _userIdentifier = app.GetUserIdentifier();
+        _workId = app.EncryptedWorkId;
+        _workTitle = app.WorkTitle;
+        _workDescription = app.WorkDescription;
+        _userIdentifier = app.UserIdentifier;
     }
 
     [Fact]

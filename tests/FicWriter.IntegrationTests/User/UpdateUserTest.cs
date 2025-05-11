@@ -14,7 +14,7 @@ public class UpdateUserTest : FicWriterFixture
 
     public UpdateUserTest(FicWriterWebApplicationFactory app) : base(app)
     {
-        _userIdentifier = app.GetUserIdentifier();
+        _userIdentifier = app.UserIdentifier;
     }
 
     [Fact]

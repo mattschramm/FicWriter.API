@@ -24,6 +24,7 @@ public class GetDashboardEndpoint : IEndpoint
             .Produces<GetDashboardResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status204NoContent)
             .WithName("GetDashboard")
+            .WithDisplayName("GetDashboard")
             .WithTags("Dashboard");
     }
 
@@ -33,7 +34,7 @@ public class GetDashboardEndpoint : IEndpoint
 
         if (validationResult.IsNotValid())
         {
-            return Results.ValidationProblem(validationResult.ToDictionary());
+            return Results.ValidationProblem(errors: validationResult.ToDictionary());
         }
 
         var result = await mediator.Send(command);
