@@ -1,6 +1,5 @@
 ﻿using FicWriter.API.Models;
 using FicWriter.API.Shared.Mapper;
-using FicWriter.API.Shared.Tag;
 using Sqids;
 using System.Text;
 
@@ -18,7 +17,7 @@ public class GetDashboardMapper(SqidsEncoder<long> sqidsEncoder) : IFeatureMappe
             ShortDescription: GetShortDescription(work.Description),
             UpdatedAt: work.UpdatedAt,
             Genres: work.Genres.Select(g => g.GenreType).ToList(),
-            Tags: work.Tags.Select(tag => new TagResponse(tag.WorkId, tag.Content)).ToList()
+            Tags: work.Tags.Select(t => t.Content).ToList()
         )).ToList();
 
         return new GetDashboardResponse(works.Count, workResponses);
