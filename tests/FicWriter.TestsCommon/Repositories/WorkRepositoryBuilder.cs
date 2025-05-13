@@ -22,10 +22,10 @@ public class WorkRepositoryBuilder
         return this;
     }
 
-    public WorkRepositoryBuilder GetWorkByIdWithTracking(Work work, User user)
+    public WorkRepositoryBuilder GetWorkByIdWithTracking(Work work, User user, bool includeArchived = false)
     {
         _mockRepository
-            .Setup(w => w.GetWorkByIdWithTracking(user, work.Id))
+            .Setup(w => w.GetWorkByIdWithTracking(user, work.Id, includeArchived))
             .ReturnsAsync(work);
         return this;
     }

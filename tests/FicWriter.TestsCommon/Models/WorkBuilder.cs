@@ -14,6 +14,7 @@ public static class WorkBuilder
             .RuleFor(w => w.Description, f => f.Lorem.Paragraph(1))
             .RuleFor(w => w.UserId, f => user.Id)
             .RuleFor(w => w.User, f => user)
+            .RuleFor(w => w.IsArchived, f => false)
             .RuleFor(w => w.Genres, f => f.Make(1, () => new Genre
             {
                 GenreType = f.PickRandom<Genres>(),
