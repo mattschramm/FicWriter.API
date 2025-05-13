@@ -17,7 +17,7 @@ public class GetWorkByIdMapper(SqidsEncoder<long> sqidsEncoder) : IFeatureMapper
             Drafts: work.Drafts,
             CreatedAt: work.CreatedAt,
             UpdatedAt: work.UpdatedAt,
-            Tags: work.Tags,
-            Genres: work.Genres);
+            Tags: work.Tags.Select(t => t.Content).ToList(),
+            Genres: work.Genres.Select(g => g.GenreType).ToList());
     }
 }

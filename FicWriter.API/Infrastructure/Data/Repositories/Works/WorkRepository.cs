@@ -29,6 +29,44 @@ public class WorkRepository(FicWriterDbContext dbContext) : IWorkRepository
         .AsNoTracking()
         .AnyAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive);
 
+    public Task<List<Work>> GetAllWorks(User user, long id, bool withTracking = false)
+    {
+        var query = _dbContext.Works
+            .AsNoTracking()
+            .Include(w => w.Drafts)
+            .Include(w => w.Genres)
+            .Include(w => w.Tags)
+            .Where(w => w.UserId == user.Id && w.IsActive);
+        
+        if (withTracking)
+        {
+            query = query.AsTracking();
+        }
+        
+        return query
+            .OrderByDescending(w => w.UpdatedAt)
+            .ToListAsync();
+    }
+    
+    public async Task<List<Work>> GetArchivedWorks(User user, long id, bool withTracking = false)
+    {
+        var query = _dbContext.Works
+            .AsNoTracking()
+            .Include(w => w.Drafts)
+            .Include(w => w.Genres)
+            .Include(w => w.Tags)
+            .Where(w => w.UserId == user.Id && w.IsActive && w.IsArchived);
+
+        if (withTracking)
+        {
+            query = query.AsTracking();
+        }
+
+        return await query
+            .OrderByDescending(w => w.UpdatedAt)
+            .ToListAsync();
+    }
+    
     public async Task<Work?> GetById(User user, long id) => await _dbContext.Works
         .AsNoTracking()
         .Include(w => w.Drafts)
@@ -76,9 +114,22 @@ public class WorkRepository(FicWriterDbContext dbContext) : IWorkRepository
             .ToListAsync();
     }
 
-    public async Task<Work?> GetWorkByIdWithTracking(User user, long id) => await _dbContext.Works
-        .Include(w => w.Drafts)
-        .FirstOrDefaultAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive && !w.IsArchived);
+    public async Task<Work?> GetWorkByIdWithTracking(User user, long id, bool includeArchived = false)
+    {
+        var query = _dbContext.Works
+            .Include(w => w.Drafts)
+            .Include(w => w.Genres)
+            .Include(w => w.Tags)
+            .Where(w => w.UserId == user.Id && w.IsActive);
+
+        if (!includeArchived)
+        {
+            query = query.Where(w => !w.IsArchived);
+        }
+
+        return await query
+            .FirstOrDefaultAsync(w => w.Id == id);
+    }
 
     public void Update(Work work) => _dbContext.Works.Update(work);
 }

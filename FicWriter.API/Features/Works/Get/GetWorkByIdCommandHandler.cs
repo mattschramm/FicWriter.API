@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using FicWriter.API.Enums;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Services;
@@ -10,7 +11,7 @@ namespace FicWriter.API.Features.Works.Get;
 public record GetWorkByIdCommand(long Id) : IRequest<ErrorOr<GetWorkByIdResponse>>;
 
 public record GetWorkByIdResponse(string Id, string Title, string Description, DateTime CreatedAt, DateTime UpdatedAt,
-                                  List<Draft> Drafts, List<Genre> Genres, List<Tag> Tags);
+                                  List<Draft> Drafts, List<Genres> Genres, List<string> Tags);
 
 public class GetWorkByIdCommandHandler(IWorkRepository repository, ICurrentUser currentUser, GetWorkByIdMapper mapper) : IRequestHandler<GetWorkByIdCommand, ErrorOr<GetWorkByIdResponse>>
 {
