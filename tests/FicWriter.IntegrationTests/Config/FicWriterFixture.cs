@@ -36,7 +36,15 @@ public class FicWriterFixture : IClassFixture<FicWriterWebApplicationFactory>
     protected async Task<HttpResponseMessage> DoPut(string url, object request, string token = "")
     {
         AuthorizeRequest(token);
+        
         return await _httpClient.PutAsJsonAsync(url, request);
+    }
+
+    protected async Task<HttpResponseMessage> DoPatch(string url, object request, string token = "")
+    {
+        AuthorizeRequest(token);
+        
+        return await _httpClient.PatchAsJsonAsync(url, request);
     }
 
     private void AuthorizeRequest(string token)

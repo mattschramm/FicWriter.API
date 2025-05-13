@@ -63,7 +63,7 @@ public class GetDashboardTest : FicWriterFixture
             var id = work.GetProperty("id").GetString();
             var title = work.GetProperty("title").GetString();
             var genres = work.GetProperty("genres").EnumerateArray().Select(g => g.GetString()).ToList();
-            var tags = work.GetProperty("tags").EnumerateArray().Select(t => t.GetProperty("content").GetString()).ToList();
+            var tags = work.GetProperty("tags").EnumerateArray().Select(t => t.GetString()).ToList();
             
             id.ShouldNotBeNullOrEmpty();
 
@@ -90,7 +90,7 @@ public class GetDashboardTest : FicWriterFixture
         var token = JwtTokenGeneratorBuilder.Build().Generate(_userIdentifier);
         var tag = _works.First().Tags.First().Content;
         
-        var response = await DoGet($"{URL}&Tag={tag}", token);
+        var response = await DoGet($"{URL}&tag={tag}", token);
         
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
         
@@ -101,7 +101,7 @@ public class GetDashboardTest : FicWriterFixture
         
         foreach (var work in works)
         {
-            var tags = work.GetProperty("tags").EnumerateArray().Select(t => t.GetProperty("content").GetString()).ToList();
+            var tags = work.GetProperty("tags").EnumerateArray().Select(t => t.GetString()).ToList();
             tags.ShouldContain(tag);
         }
     }
