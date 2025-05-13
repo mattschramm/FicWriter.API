@@ -1,5 +1,4 @@
-﻿using ErrorOr;
-using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
 using MediatR;
 using Sqids;

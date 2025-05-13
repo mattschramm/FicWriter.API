@@ -2,7 +2,6 @@
 using FicWriter.API.Enums;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Services;
-using FicWriter.API.Shared.Tag;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +12,11 @@ public record GetDashboardCommand(
     [FromQuery] int PageSize,
     [FromQuery] string? Title,
     [FromQuery(Name = "genre")] Genres[]? Genres,
-    [FromQuery] string[]? Tags,
+    [FromQuery(Name = "tag")] string[]? Tags,
     [FromQuery] Orders? Order) : IRequest<ErrorOr<GetDashboardResponse>>;
 
 public record GetWorksResponse(string Id, string Title, string ShortDescription, 
-    DateTime UpdatedAt, List<Genres> Genres, List<TagResponse> Tags);
+    DateTime UpdatedAt, List<Genres> Genres, List<string> Tags);
 
 public record GetDashboardResponse(int Total, List<GetWorksResponse> Works);
 
