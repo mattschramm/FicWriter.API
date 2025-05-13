@@ -13,8 +13,8 @@ public static class UpdateWorkCommandBuilder
                 id,
                 f.Lorem.Sentence(1),
                 f.Lorem.Paragraph(1),
-                f.Make(3, f.PickRandom<Genres>).ToList(),
-                f.Make(3, f.Lorem.Word).ToList()
+                f.Make(1, f.PickRandom<Genres>).ToList(),
+                f.Make(1, f.Lorem.Word).ToList()
                 ))
             .Generate();
     }
