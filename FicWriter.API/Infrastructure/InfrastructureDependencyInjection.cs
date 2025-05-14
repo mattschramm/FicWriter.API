@@ -1,4 +1,5 @@
 ﻿using FicWriter.API.Infrastructure.Data;
+using FicWriter.API.Infrastructure.Data.Repositories.Drafts;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
@@ -45,6 +46,7 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IWorkRepository, WorkRepository>();
         services.AddScoped<ITokenRepository, TokenRepository>();
+        services.AddScoped<IDraftRepository, DraftRepository>();
     }
 
     private static void AddPasswordHasher(IServiceCollection services)

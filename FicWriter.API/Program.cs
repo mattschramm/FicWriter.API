@@ -7,8 +7,6 @@ using FicWriter.API.Shared.Mapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
@@ -117,12 +115,14 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddSingleton<IAuthorizationHandler, SameUserHandler>();
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+builder.Services.AddGroupedEndpoints(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGroupedEndpoints();
 app.MapEndpoints();
 
 // Configure the HTTP request pipeline.
