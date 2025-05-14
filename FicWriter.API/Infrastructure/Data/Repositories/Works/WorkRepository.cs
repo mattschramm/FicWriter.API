@@ -9,10 +9,7 @@ public class WorkRepository(FicWriterDbContext dbContext) : IWorkRepository
 {
     private readonly FicWriterDbContext _dbContext = dbContext;
 
-    public async Task Create(Work work)
-    {
-        await _dbContext.Works.AddAsync(work);
-    }
+    public async Task Create(Work work) => await _dbContext.Works.AddAsync(work);
 
     public async Task Delete(long id)
     {
