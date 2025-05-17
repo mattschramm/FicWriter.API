@@ -1,22 +1,22 @@
 ﻿using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Users.Revoke;
 
+[GroupName(EndpointGroupNames.Users)]
 public class RevokeRefreshTokenEndpoint() : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapDelete("users/{id:guid}/refresh-token", async (Guid id, [FromServices] IMediator mediator) =>
+        app.MapDelete("/{id:guid}/refresh-token", async (Guid id, IMediator mediator) =>
         {
             var result = await Handle(id, mediator);
             return result;
         })
             .RequireAuthorization("SameUser")
-            .WithName("RevokeRefreshToken")
-            .WithTags("Users");
+            .WithTags("Tokens")
+            .WithName("RevokeRefreshToken");
     }
 
     public async Task<IResult> Handle(Guid guid, IMediator mediator)

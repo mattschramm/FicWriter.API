@@ -6,11 +6,12 @@ using Sqids;
 
 namespace FicWriter.API.Features.Works.Archive;
 
+[GroupName(EndpointGroupNames.Works)]
 public class ArchiveWorkEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPatch("/work/{id}", async (
+        app.MapPatch("/{id}", async (
                 [FromRoute] string id,
                 IMediator mediator,
                 SqidsEncoder<long> encoder) =>
@@ -21,10 +22,8 @@ public class ArchiveWorkEndpoint : IEndpoint
                 return result;
             })
             .WithName("ArchiveWork")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithTags("Works");
+            .Produces<ArchiveWorkResponse>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status404NotFound);
     }
 
     private static async Task<IResult> Handle(long id, IMediator mediator)

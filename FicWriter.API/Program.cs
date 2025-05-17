@@ -114,7 +114,6 @@ builder.Services.AddAuthorizationBuilder()
 
 builder.Services.AddSingleton<IAuthorizationHandler, SameUserHandler>();
 
-builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddGroupedEndpoints(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
@@ -123,7 +122,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGroupedEndpoints();
-app.MapEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

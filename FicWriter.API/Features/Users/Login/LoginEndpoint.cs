@@ -8,17 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Users.Login;
 
+[GroupName(EndpointGroupNames.Users)]
 public class LoginEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPost("/user/login", Handle)
-            .WithName("LoginUser")
+        app.MapPost("/login", Handle)
+            .WithName("Login")
             .AllowAnonymous()
             .Produces<UserResponse>(StatusCodes.Status200OK)
             .ProducesValidationProblem()
-            .ProducesProblem(StatusCodes.Status401Unauthorized)
-            .WithTags("Users");
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 
     public async Task<IResult> Handle(LoginCommand request, IMediator mediator, IValidator<LoginCommand> validator)

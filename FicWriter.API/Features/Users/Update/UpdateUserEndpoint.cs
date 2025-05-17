@@ -6,17 +6,17 @@ using MediatR;
 
 namespace FicWriter.API.Features.Users.Update;
 
+[GroupName(EndpointGroupNames.Users)]
 public class UpdateUserEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPut("/user", Handle)
+        app.MapPut("/", Handle)
             .RequireAuthorization()
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status204NoContent)
-            .WithName("UpdateUser")
-            .WithTags("Users");
+            .WithName("UpdateUser");
     }
 
     private async Task<IResult> Handle(UpdateUserCommand request, IMediator mediator, IValidator<UpdateUserCommand> validator)

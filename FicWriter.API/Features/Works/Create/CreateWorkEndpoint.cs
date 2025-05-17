@@ -6,16 +6,15 @@ using MediatR;
 
 namespace FicWriter.API.Features.Works.Create;
 
+[GroupName(EndpointGroupNames.Works)]
 public class CreateWorkEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPost("/work", Handle)
+        app.MapPost("/", Handle)
             .WithName("CreateWork")
-            .RequireAuthorization()
             .Produces<CreateWorkResponse>(StatusCodes.Status201Created)
-            .ProducesValidationProblem()
-            .WithTags("Works");
+            .ProducesValidationProblem();
     }
 
     private async Task<IResult> Handle(
