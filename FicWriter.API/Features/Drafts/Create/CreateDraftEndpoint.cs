@@ -5,12 +5,12 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Sqids;
 
-namespace FicWriter.API.Features.Drafts;
+namespace FicWriter.API.Features.Drafts.Create;
 
 public record CreateDraftRequest(string Title, uint Order);
 
-[EndpointGroup(EndpointGroupNames.Drafts)]
-public class CreateDraftEndpoint : IGroupedEndpoint
+[GroupName(EndpointGroupNames.Drafts)]
+public class CreateDraftEndpoint : IEndpoint
 {
     public void MapEndpoint(RouteGroupBuilder app)
     {

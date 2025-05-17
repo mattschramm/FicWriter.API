@@ -1,11 +1,11 @@
 ﻿namespace FicWriter.API.Endpoints;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-public class EndpointGroupAttribute : Attribute
+public class GroupNameAttribute : Attribute
 {
     public string GroupName { get; }
 
-    public EndpointGroupAttribute(string groupName)
+    public GroupNameAttribute(string groupName)
     {
         if (string.IsNullOrWhiteSpace(groupName))
         {

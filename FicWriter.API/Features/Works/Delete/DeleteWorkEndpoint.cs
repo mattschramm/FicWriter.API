@@ -5,21 +5,21 @@ using Sqids;
 
 namespace FicWriter.API.Features.Works.Delete;
 
+[GroupName(EndpointGroupNames.Works)]
 public class DeleteWorkEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapDelete("/work/{id}", (string id, IMediator mediator, SqidsEncoder<long> encoder) =>
+        app.MapDelete("/{id}", (string id, IMediator mediator, SqidsEncoder<long> encoder) =>
         {
             var decryptedId = encoder.Decode(id).Single();
 
             var result = Handle(decryptedId, mediator);
             return result;
         })
-            .RequireAuthorization()
+            .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("DeleteWork")
-            .WithTags("Works");
+            .WithName("DeleteWork");
     }
 
     private static async Task<IResult> Handle(long id, IMediator mediator)

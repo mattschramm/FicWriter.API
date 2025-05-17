@@ -7,17 +7,17 @@ using MediatR;
 
 namespace FicWriter.API.Features.Users.Create;
 
+[GroupName(EndpointGroupNames.Users)]
 public class CreateUserEndpoint : IEndpoint
 { 
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPost("/user/register", Handle)
+        app.MapPost("/", Handle)
             .WithName("CreateUser")
             .AllowAnonymous()
             .Produces<UserResponse>(StatusCodes.Status200OK)
             .ProducesValidationProblem()
-            .ProducesProblem(StatusCodes.Status409Conflict)
-            .WithTags("Users");
+            .ProducesProblem(StatusCodes.Status409Conflict);
     }
 
     private async Task<IResult> Handle(

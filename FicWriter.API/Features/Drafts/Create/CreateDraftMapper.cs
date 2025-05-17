@@ -1,7 +1,7 @@
 ﻿using FicWriter.API.Models;
 using FicWriter.API.Shared.Mapper;
 
-namespace FicWriter.API.Features.Drafts;
+namespace FicWriter.API.Features.Drafts.Create;
 
 public class CreateDraftMapper : IFeatureMapper
 {

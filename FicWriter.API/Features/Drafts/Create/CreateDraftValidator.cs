@@ -1,7 +1,7 @@
 ﻿using FicWriter.API.Shared.Mapper;
 using FluentValidation;
 
-namespace FicWriter.API.Features.Drafts;
+namespace FicWriter.API.Features.Drafts.Create;
 
 public class CreateDraftValidator : AbstractValidator<CreateDraftRequest>
 {

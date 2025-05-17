@@ -7,7 +7,7 @@ using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Services;
 using MediatR;
 
-namespace FicWriter.API.Features.Drafts;
+namespace FicWriter.API.Features.Drafts.Create;
 
 public record CreateDraftCommand(string Title, uint Order, long WorkId) : IRequest<ErrorOr<CreateDraftResponse>>;
 public record CreateDraftResponse(long Id, string Title, DateTime CreatedAt, DateTime UpdatedAt, uint Order);
@@ -24,7 +24,7 @@ public class CreateDraftCommandHandler(IDraftRepository draftRepository, IUnitOf
     {
         var user = await _currentUser.GetCurrentUser();
 
-        if (!(await _workRepository.Exists(user, command.WorkId)))
+        if (!await _workRepository.Exists(user, command.WorkId))
         {
             return WorkErrors.WorkNotFound();
         }

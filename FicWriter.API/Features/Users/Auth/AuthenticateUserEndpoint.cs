@@ -5,16 +5,17 @@ using MediatR;
 
 namespace FicWriter.API.Features.Users.Auth;
 
+[GroupName(EndpointGroupNames.Users)]
 public class AuthenticateUserEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPost("/user/authenticate", Handle)
+        app.MapPost("/auth", Handle)
             .WithName("AuthenticateUser")
-            .AllowAnonymous()
+            .WithTags("Tokens")
             .Produces<UserResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
-            .WithTags("Users");
+            .RequireAuthorization();
     }
 
     private async Task<IResult> Handle(AuthenticateUserCommand request, IMediator mediator)
