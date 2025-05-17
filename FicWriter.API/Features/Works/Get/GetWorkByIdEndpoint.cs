@@ -5,11 +5,12 @@ using Sqids;
 
 namespace FicWriter.API.Features.Works.Get;
 
+[GroupName(EndpointGroupNames.Works)]
 public class GetWorkByIdEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapGet("/work/{id}", async (
+        app.MapGet("/{id}", async (
             string id,
             SqidsEncoder<long> encoder,
             IMediator mediator) =>
@@ -21,8 +22,7 @@ public class GetWorkByIdEndpoint : IEndpoint
         })
             .RequireAuthorization()
             .Produces<GetWorkByIdResponse>(StatusCodes.Status200OK)
-            .WithName("GetWorkById")
-            .WithTags("Works");
+            .WithName("GetWorkById");
     }
 
     private static async Task<IResult> Handle(long id, IMediator mediator)

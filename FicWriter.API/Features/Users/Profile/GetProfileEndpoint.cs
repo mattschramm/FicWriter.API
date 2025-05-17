@@ -4,14 +4,14 @@ using MediatR;
 
 namespace FicWriter.API.Features.Users.Profile;
 
+[GroupName(EndpointGroupNames.Users)]
 public class GetProfileEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapGet("/user", Handle)
+        app.MapGet("/", Handle)
             .RequireAuthorization()
-            .WithName("GetUserProfile")
-            .WithTags("Users");
+            .WithName("GetUserProfile");
     }
 
     public async Task<IResult> Handle(IMediator mediator)

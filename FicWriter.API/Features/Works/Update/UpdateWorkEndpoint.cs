@@ -11,11 +11,12 @@ namespace FicWriter.API.Features.Works.Update;
 
 public record UpdateWorkRequest(string Title, string Description, List<Genres> Genres, List<string> Tags);
 
+[GroupName(EndpointGroupNames.Works)]
 public class UpdateWorkEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPut("/work/{id}", async (
+        app.MapPut("/{id}", async (
             [FromRoute] string id,
             [FromBody] UpdateWorkRequest request,
             IMediator mediator,
@@ -28,11 +29,9 @@ public class UpdateWorkEndpoint : IEndpoint
             return result;
         })
             .WithName("UpdateWork")
-            .RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
             .ProducesValidationProblem()
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithTags("Works");
+            .ProducesProblem(StatusCodes.Status404NotFound);
     }
 
     private static async Task<IResult> Handle(UpdateWorkRequest request, long id, IMediator mediator, IValidator<UpdateWorkRequest> validator)

@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Works.Dashboard;
 
+[GroupName(EndpointGroupNames.Works)]
 public class GetDashboardEndpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapGet("/dashboard", async (
+        app.MapGet("/", async (
             [AsParameters] GetDashboardCommand command,
             [FromServices] IMediator mediator,
             [FromServices] IValidator<GetDashboardCommand> validator) =>
@@ -19,12 +20,10 @@ public class GetDashboardEndpoint : IEndpoint
             var result = await Handle(command, mediator, validator);
             return result;
         })
-            .RequireAuthorization()
             .ProducesValidationProblem()
             .Produces<GetDashboardResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status204NoContent)
             .WithName("GetDashboard")
-            .WithDisplayName("GetDashboard")
             .WithTags("Dashboard");
     }
 
