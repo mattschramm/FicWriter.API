@@ -7,7 +7,7 @@ namespace FicWriter.IntegrationTests.User;
 
 public class CreateUserTest : FicWriterFixture
 {
-    private const string URL = "/user/register";
+    private const string URL = "/user";
 
     public CreateUserTest(FicWriterWebApplicationFactory app) : base(app)
     {

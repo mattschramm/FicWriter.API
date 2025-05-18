@@ -8,7 +8,7 @@ namespace FicWriter.IntegrationTests.Work;
 
 public class CreateWorkTest : FicWriterFixture
 {
-    private const string URL = "/work";
+    private const string URL = "/works";
 
     private readonly Guid _uniqueIdentifier;
 
