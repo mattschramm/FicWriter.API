@@ -7,7 +7,7 @@ namespace FicWriter.IntegrationTests.Work;
 
 public class GetDashboardTest : FicWriterFixture
 {
-    private const string URL = "/dashboard?Page=1&PageSize=20";
+    private const string URL = "/works?Page=1&PageSize=20";
 
     private readonly string _workTitle;
     private readonly List<API.Models.Work> _works;

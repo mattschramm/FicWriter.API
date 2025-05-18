@@ -14,8 +14,7 @@ public class AuthenticateUserEndpoint : IEndpoint
             .WithName("AuthenticateUser")
             .WithTags("Tokens")
             .Produces<UserResponse>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status401Unauthorized)
-            .RequireAuthorization();
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 
     private async Task<IResult> Handle(AuthenticateUserCommand request, IMediator mediator)
