@@ -9,7 +9,7 @@ namespace FicWriter.IntegrationTests.User;
 
 public class AuthenticateUserTest : FicWriterFixture
 {
-    private const string URL = "/user/authenticate";
+    private const string URL = "/user/auth";
 
     private readonly string _name;
     private readonly string _refreshToken;
