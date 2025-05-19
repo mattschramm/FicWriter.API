@@ -2,7 +2,6 @@
 using FicWriter.IntegrationTests.Config;
 using Shouldly;
 using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace FicWriter.IntegrationTests.User;

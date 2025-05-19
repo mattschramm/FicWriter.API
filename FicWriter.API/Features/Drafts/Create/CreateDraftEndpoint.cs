@@ -35,6 +35,13 @@ public class CreateDraftEndpoint : IEndpoint
 
     private static async Task<IResult> Handle(long workId, CreateDraftRequest request, IMediator mediator, IValidator<CreateDraftRequest> validator)
     {
+        var validationResult = await validator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return Results.ValidationProblem(validationResult.ToDictionary());
+        }
+
         var command = new CreateDraftCommand(request.Title, request.Order, workId);
         
         var result = await mediator.Send(command);

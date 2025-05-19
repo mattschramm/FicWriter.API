@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using FicWriter.API.Infrastructure.Errors.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -34,6 +35,12 @@ public static partial class ExceptionsMiddlewareExtensions
                         var errorMessage = $"Invalid value in query request for parameter {parameterName}";
                         errors.Add(parameterName, [errorMessage]);
                     }
+                }
+
+                if (exception is InvalidWorkIdException invalidWorkId)
+                {
+                    statusCode = StatusCodes.Status404NotFound;
+                    title = "Work not found";
                 }
 
                 var problemDetails = new ValidationProblemDetails

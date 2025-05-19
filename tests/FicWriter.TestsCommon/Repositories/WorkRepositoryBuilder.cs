@@ -64,5 +64,13 @@ public class WorkRepositoryBuilder
         return this;
     }
 
+    public WorkRepositoryBuilder Exists(Work work, User user)
+    {
+        _mockRepository
+            .Setup(w => w.Exists(user, work.Id))
+            .ReturnsAsync(true);
+        return this;
+    }
+
     public IWorkRepository Build() => _mockRepository.Object;
 }
