@@ -1,5 +1,5 @@
-﻿using FicWriter.API.Models;
-using FicWriter.API.Shared.User;
+﻿using FicWriter.API.Features.Users.Common;
+using FicWriter.API.Models;
 
 namespace FicWriter.API.Features.Users.Create;
 

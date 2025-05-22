@@ -1,5 +1,4 @@
-﻿using CommonTestUtils.Requests;
-using CommonTestUtils.Tokens;
+﻿using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Drafts.Create;
 using FicWriter.IntegrationTests.Config;
 using FicWriter.IntegrationTests.Draft.Util;

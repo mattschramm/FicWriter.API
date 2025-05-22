@@ -5,7 +5,7 @@ namespace FicWriter.API.Infrastructure.Security.IdEncoder;
 
 public static class SqidsEncoderExtensions
 {
-    public static long Decode(this SqidsEncoder<long> encoder, string encryptedId)
+    public static long DecodeSingle(this SqidsEncoder<long> encoder, string encryptedId)
     {
         long id;
 

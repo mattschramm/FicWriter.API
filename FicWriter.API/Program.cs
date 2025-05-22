@@ -2,6 +2,7 @@ using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure;
 using FicWriter.API.Infrastructure.Data;
 using FicWriter.API.Infrastructure.Errors;
+using FicWriter.API.Infrastructure.Mediator;
 using FicWriter.API.Infrastructure.Security.Authorization;
 using FicWriter.API.Shared.Mapper;
 using FluentValidation;
@@ -19,10 +20,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssemblyContaining<Program>();
-});
+builder.Services.AddConfiguredMediatR();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 

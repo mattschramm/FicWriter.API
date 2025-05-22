@@ -1,7 +1,6 @@
 ﻿using ErrorOr;
 using FicWriter.API.Infrastructure.Data.Repositories.Drafts;
 using FicWriter.API.Infrastructure.Data.Repositories.Unit;
-using FicWriter.API.Infrastructure.Data.Repositories.Users;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Services;
