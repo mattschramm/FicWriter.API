@@ -47,7 +47,6 @@ public static partial class ExceptionsMiddlewareExtensions
                 {
                     Status = statusCode,
                     Title = title,
-                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
                     Instance = context.Request.Path,
                     Errors = errors
                 };
