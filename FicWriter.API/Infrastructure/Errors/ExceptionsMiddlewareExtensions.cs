@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using FicWriter.API.Infrastructure.Errors.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -36,11 +37,16 @@ public static partial class ExceptionsMiddlewareExtensions
                     }
                 }
 
+                if (exception is InvalidWorkIdException invalidWorkId)
+                {
+                    statusCode = StatusCodes.Status404NotFound;
+                    title = "Work not found";
+                }
+
                 var problemDetails = new ValidationProblemDetails
                 {
                     Status = statusCode,
                     Title = title,
-                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
                     Instance = context.Request.Path,
                     Errors = errors
                 };
