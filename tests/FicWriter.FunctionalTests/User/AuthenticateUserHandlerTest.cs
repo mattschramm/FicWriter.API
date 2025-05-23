@@ -2,8 +2,8 @@
 using CommonTestUtils.Repositories;
 using CommonTestUtils.Tokens;
 using FicWriter.API.Features.Users.Auth;
+using FicWriter.API.Features.Users.Common;
 using FicWriter.API.Models;
-using FicWriter.API.Shared.User;
 using Shouldly;
 
 namespace FicWriter.FunctionalTests.User;

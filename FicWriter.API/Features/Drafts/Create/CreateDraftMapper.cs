@@ -11,7 +11,6 @@ public class CreateDraftMapper : IFeatureMapper
             Title = command.Title,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Order = command.Order,
             WorkId = command.WorkId
         };
 

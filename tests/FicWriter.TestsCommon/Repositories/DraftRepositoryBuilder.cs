@@ -1,4 +1,5 @@
 ﻿using FicWriter.API.Infrastructure.Data.Repositories.Drafts;
+using FicWriter.API.Models;
 using Moq;
 
 namespace CommonTestUtils.Repositories;
@@ -13,4 +14,12 @@ public class DraftRepositoryBuilder
     }
 
     public IDraftRepository Build() => _draftRepositoryMock.Object;
+
+    public DraftRepositoryBuilder GetById(Draft draft)
+    {
+        _draftRepositoryMock
+            .Setup(x => x.GetDraftById(draft.WorkId, draft.Id))
+            .ReturnsAsync(draft);
+        return this;
+    }
 }

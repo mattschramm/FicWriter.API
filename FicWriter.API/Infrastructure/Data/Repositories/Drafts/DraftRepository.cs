@@ -9,11 +9,18 @@ public class DraftRepository(FicWriterDbContext dbContext) : IDraftRepository
 
     public async Task Create(Draft draft) => await _dbContext.Drafts.AddAsync(draft);
     
-    public async Task<Draft?> GetDraftById(long workId, long draftId)
-    {
-        return await _dbContext.Drafts
+    public async Task<Draft?> GetDraftById(long workId, long draftId) =>
+        await _dbContext.Drafts
             .AsNoTracking()
-            .Where(d => d.WorkId == workId && d.Id == draftId)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(d => d.WorkId == workId && d.Id == draftId);
+
+    public async Task<uint> GetNextOrder(long workId)
+    {
+        var maxOrder = await _dbContext.Drafts
+            .AsNoTracking()
+            .Where(d => d.WorkId == workId)
+            .MaxAsync(d => (uint?)d.Order) ?? 0;
+
+        return maxOrder + 1;
     }
 }

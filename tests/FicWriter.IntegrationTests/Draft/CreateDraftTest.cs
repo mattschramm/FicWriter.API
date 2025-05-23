@@ -73,7 +73,7 @@ public class CreateDraftTest : FicWriterFixture
 
         var request = new CreateDraftRequest("Test Title", 1);
 
-        var url = DraftUrlFactory.GetDraftUrl("invalid-work-id");
+        var url = DraftUrlFactory.GetDraftUrl("123456789");
 
         var response = await DoPost(url, request, token);
 
