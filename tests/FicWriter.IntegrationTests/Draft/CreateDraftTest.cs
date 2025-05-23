@@ -25,7 +25,7 @@ public class CreateDraftTest : FicWriterFixture
             .Build()
             .Generate(_userIdentifier);
 
-        var request = new CreateDraftRequest("Test Title", 1);
+        var request = new CreateDraftRequest("Test Title");
 
         var url = DraftUrlFactory.GetDraftUrl(_workId);
 
@@ -37,7 +37,7 @@ public class CreateDraftTest : FicWriterFixture
         using var responseData = await JsonDocument.ParseAsync(responseBody);
 
         responseData.RootElement.GetProperty("title").GetString().ShouldBe(request.Title);
-        responseData.RootElement.GetProperty("order").GetUInt32().ShouldBe(request.Order);
+        responseData.RootElement.GetProperty("order").GetInt32().ShouldBe(1);
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class CreateDraftTest : FicWriterFixture
             .Build()
             .Generate(_userIdentifier);
 
-        var request = new CreateDraftRequest(string.Empty, 1);
+        var request = new CreateDraftRequest(string.Empty);
 
         var url = DraftUrlFactory.GetDraftUrl(_workId);
 
@@ -71,7 +71,7 @@ public class CreateDraftTest : FicWriterFixture
             .Build()
             .Generate(_userIdentifier);
 
-        var request = new CreateDraftRequest("Test Title", 1);
+        var request = new CreateDraftRequest("Test Title");
 
         var url = DraftUrlFactory.GetDraftUrl("123456789");
 

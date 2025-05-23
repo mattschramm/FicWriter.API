@@ -11,14 +11,17 @@ public class CreateDraftHandlerTest
     private static CreateDraftCommandHandler CreateHandler(API.Models.User user, API.Models.Work? work = null)
     {
         var workRepositoryBuilder = new WorkRepositoryBuilder();
-        
+        var draftRepositoryBuilder = new DraftRepositoryBuilder();
+
         if (work != null)
         {
             workRepositoryBuilder.Exists(work, user);
+            draftRepositoryBuilder.GetNextOrder(work.Id, 1);
         }
 
-        var draftRepository = new DraftRepositoryBuilder().Build();
+        
         var unitOfWork = UnitOfWorkBuilder.Build();
+        var draftRepository = draftRepositoryBuilder.Build();
         var mapper = new CreateDraftMapper();
 
         return new CreateDraftCommandHandler(
@@ -40,6 +43,5 @@ public class CreateDraftHandlerTest
 
         result.IsError.ShouldBeFalse();
         result.Value.Title.ShouldBe(command.Title);
-        result.Value.Order.ShouldBe(command.Order);
     }
 }
