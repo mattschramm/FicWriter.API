@@ -1,5 +1,6 @@
 ﻿using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
+using FicWriter.API.Infrastructure.Security.IdEncoder;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using Sqids;
 
 namespace FicWriter.API.Features.Drafts.Create;
 
-public record CreateDraftRequest(string Title, uint Order);
+public record CreateDraftRequest(string Title);
 
 [GroupName(EndpointGroupNames.Drafts)]
 public class CreateDraftEndpoint : IEndpoint
@@ -21,7 +22,7 @@ public class CreateDraftEndpoint : IEndpoint
             IValidator<CreateDraftRequest> validator,
             SqidsEncoder<long> encoder) =>
         {
-            var decryptedWorkId = encoder.Decode(workId).Single();
+            var decryptedWorkId = encoder.DecodeSingle(workId);
 
             var result = await Handle(decryptedWorkId, request, mediator, validator);
             return result;
@@ -42,7 +43,7 @@ public class CreateDraftEndpoint : IEndpoint
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var command = new CreateDraftCommand(request.Title, request.Order, workId);
+        var command = new CreateDraftCommand(request.Title, workId);
         
         var result = await mediator.Send(command);
         

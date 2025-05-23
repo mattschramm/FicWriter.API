@@ -1,5 +1,4 @@
-﻿using FicWriter.API.Shared.Mapper;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace FicWriter.API.Features.Drafts.Create;
 
