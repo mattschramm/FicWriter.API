@@ -1,6 +1,7 @@
 ﻿using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.IdEncoder;
+using FicWriter.API.Shared.Draft;
 using MediatR;
 using Sqids;
 
@@ -23,7 +24,7 @@ public class GetDraftEndpoint : IEndpoint
             return result;
         })
             .WithName("GetDraft")
-            .Produces<GetDraftResponse>(StatusCodes.Status200OK)
+            .Produces<DraftResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound);
     }
 

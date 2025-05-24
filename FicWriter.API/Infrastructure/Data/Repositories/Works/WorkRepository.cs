@@ -24,7 +24,7 @@ public class WorkRepository(FicWriterDbContext dbContext) : IWorkRepository
 
     public Task<bool> Exists(User user, long id) => _dbContext.Works
         .AsNoTracking()
-        .AnyAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive);
+        .AnyAsync(w => w.Id == id && w.UserId == user.Id && w.IsActive && !w.IsArchived);
 
     public Task<List<Work>> GetAllWorks(User user, long id, bool withTracking = false)
     {

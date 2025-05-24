@@ -2,21 +2,19 @@
 using FicWriter.API.Infrastructure.Data.Repositories.Drafts;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Mediator.Requests;
+using FicWriter.API.Shared.Draft;
 using MediatR;
-using Sqids;
 
 namespace FicWriter.API.Features.Drafts.Get;
 
-public record GetDraftCommand(long WorkId, long DraftId) : IWorkRequest<ErrorOr<GetDraftResponse>>;
+public record GetDraftCommand(long WorkId, long DraftId) : IWorkRequest<ErrorOr<DraftResponse>>;
 
-public record GetDraftResponse(long Id, string Title, DateTime CreatedAt, DateTime UpdatedAt, uint Order);
-
-public class GetDraftCommandHandler(IDraftRepository draftRepository, GetDraftMapper mapper) : IRequestHandler<GetDraftCommand, ErrorOr<GetDraftResponse>>
+public class GetDraftCommandHandler(IDraftRepository draftRepository, DraftResponseMapper mapper) : IRequestHandler<GetDraftCommand, ErrorOr<DraftResponse>>
 {
     private readonly IDraftRepository _draftRepository = draftRepository;
-    private readonly GetDraftMapper _mapper = mapper;
+    private readonly DraftResponseMapper _mapper = mapper;
 
-    public async Task<ErrorOr<GetDraftResponse>> Handle(GetDraftCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<DraftResponse>> Handle(GetDraftCommand request, CancellationToken cancellationToken)
     {
         var draft = await _draftRepository.GetDraftById(request.WorkId, request.DraftId);
 
