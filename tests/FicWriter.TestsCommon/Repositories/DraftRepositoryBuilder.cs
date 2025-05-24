@@ -32,4 +32,13 @@ public class DraftRepositoryBuilder
 
         return this;
     }
+
+    public DraftRepositoryBuilder GetDrafts(long workId, List<Draft> drafts)
+    {
+        _draftRepositoryMock
+            .Setup(x => x.GetDrafts(workId))
+            .ReturnsAsync(drafts);
+
+        return this;
+    }
 }

@@ -1,7 +1,7 @@
-﻿
-using CommonTestUtils.Models;
+﻿using CommonTestUtils.Models;
 using CommonTestUtils.Repositories;
 using FicWriter.API.Features.Drafts.Get;
+using FicWriter.API.Shared.Draft;
 using Shouldly;
 
 namespace FicWriter.FunctionalTests.Draft;
@@ -18,7 +18,7 @@ public class GetDraftHandlerTest
         }
 
         var draftRepository = draftRepositoryBuilder.Build();
-        var mapper = new GetDraftMapper();
+        var mapper = new DraftResponseMapper();
 
         return new GetDraftCommandHandler(draftRepository, mapper);
     }
@@ -26,7 +26,9 @@ public class GetDraftHandlerTest
     [Fact]
     public async Task Success()
     {
-        var draft = DraftBuilder.Build();
+        var user = UserBuilder.Build().user;
+        var work = WorkBuilder.Build(user);
+        var draft = DraftBuilder.Build(work);
         var handler = CreateHandler(draft);
         var command = new GetDraftCommand(draft.WorkId, draft.Id);
 

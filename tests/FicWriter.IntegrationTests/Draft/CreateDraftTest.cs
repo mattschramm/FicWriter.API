@@ -11,11 +11,13 @@ public class CreateDraftTest : FicWriterFixture
 {
     private readonly Guid _userIdentifier;
     private readonly string _workId;
+    private readonly long _order;
 
     public CreateDraftTest(FicWriterWebApplicationFactory app) : base(app)
     {
         _userIdentifier = app.UserIdentifier;
         _workId = app.EncryptedWorkId;
+        _order = app.Drafts.Count + 1;
     }
 
     [Fact]
@@ -37,7 +39,7 @@ public class CreateDraftTest : FicWriterFixture
         using var responseData = await JsonDocument.ParseAsync(responseBody);
 
         responseData.RootElement.GetProperty("title").GetString().ShouldBe(request.Title);
-        responseData.RootElement.GetProperty("order").GetInt32().ShouldBe(1);
+        responseData.RootElement.GetProperty("order").GetInt64().ShouldBe(_order);
     }
 
     [Fact]
