@@ -10,8 +10,7 @@ public static class CreateDraftCommandBuilder
         return new Faker<CreateDraftCommand>()
             .CustomInstantiator(f => new CreateDraftCommand(
                 f.Lorem.Sentence(3),
-                f.Random.UInt(),
-                1
+                f.Random.UInt()
             ))
             .Generate();
     }

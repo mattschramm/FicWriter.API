@@ -1,4 +1,5 @@
 ﻿using FicWriter.API.Models;
+using FicWriter.API.Shared.Draft;
 using FicWriter.API.Shared.Mapper;
 using Sqids;
 
@@ -14,10 +15,27 @@ public class GetWorkByIdMapper(SqidsEncoder<long> sqidsEncoder) : IFeatureMapper
             Id: _sqidsEncoder.Encode(work.Id),
             Title: work.Title,
             Description: work.Description,
-            Drafts: work.Drafts,
+            Drafts: MapDrafts(work.Drafts),
             CreatedAt: work.CreatedAt,
             UpdatedAt: work.UpdatedAt,
             Tags: work.Tags.Select(t => t.Content).ToList(),
             Genres: work.Genres.Select(g => g.GenreType).ToList());
+    }
+
+    private static List<DraftResponse> MapDrafts(List<Draft> drafts)
+    {
+        var draftsResponse = new List<DraftResponse>();
+
+        foreach (var draft in drafts)
+        {
+            draftsResponse.Add(new DraftResponse(
+                Id: draft.Id,
+                Title: draft.Title,
+                CreatedAt: draft.CreatedAt,
+                UpdatedAt: draft.UpdatedAt,
+                Order: draft.Order));
+        }
+
+        return draftsResponse;
     }
 }

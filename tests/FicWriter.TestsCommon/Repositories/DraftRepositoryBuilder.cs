@@ -20,6 +20,16 @@ public class DraftRepositoryBuilder
         _draftRepositoryMock
             .Setup(x => x.GetDraftById(draft.WorkId, draft.Id))
             .ReturnsAsync(draft);
+
+        return this;
+    }
+
+    public DraftRepositoryBuilder GetNextOrder(long workId, uint order)
+    {
+        _draftRepositoryMock
+            .Setup(x => x.GetNextOrder(workId))
+            .ReturnsAsync(order);
+
         return this;
     }
 }
