@@ -18,7 +18,7 @@ public class GetDraftHandlerTest
         }
 
         var draftRepository = draftRepositoryBuilder.Build();
-        var mapper = new DraftResponseMapper();
+        var mapper = new DraftMapper();
 
         return new GetDraftCommandHandler(draftRepository, mapper);
     }

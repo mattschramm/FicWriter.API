@@ -1,10 +1,10 @@
 ﻿using ErrorOr;
-using FicWriter.API.Features.Users.Common;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
+using FicWriter.API.Shared.User;
 using MediatR;
 
 namespace FicWriter.API.Features.Users.Auth;

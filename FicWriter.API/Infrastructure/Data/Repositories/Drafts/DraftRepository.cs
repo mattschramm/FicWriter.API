@@ -9,8 +9,7 @@ public class DraftRepository(FicWriterDbContext dbContext) : IDraftRepository
 
     public async Task Create(Draft draft) => await _dbContext.Drafts.AddAsync(draft);
 
-    public async Task<Draft?> GetDraftById(long workId, long draftId) =>
-        await _dbContext.Drafts
+    public async Task<Draft?> GetDraftById(long workId, long draftId) => await _dbContext.Drafts
             .AsNoTracking()
             .FirstOrDefaultAsync(d => d.WorkId == workId && d.Id == draftId);
 
@@ -22,15 +21,16 @@ public class DraftRepository(FicWriterDbContext dbContext) : IDraftRepository
         return maxOrder + 1;
     }
 
-    public async Task<List<Draft>> GetDrafts(long workId) =>
-        await GetDraftsList(workId)
+    public async Task<List<Draft>> GetDrafts(long workId) => await GetDraftsList(workId)
         .OrderByDescending(d => d.Order)
             .ToListAsync();
 
-    private IQueryable<Draft> GetDraftsList(long workId)
-    {
-        return _dbContext.Drafts
+    private IQueryable<Draft> GetDraftsList(long workId) => _dbContext.Drafts
             .AsNoTracking()
             .Where(d => d.WorkId == workId);
-    }
+
+    public void Update(Draft draft) => _dbContext.Drafts.Update(draft);
+    public Task<Draft?> GetDraftByIdWithTracking(long workId, long draftId) => 
+        _dbContext.Drafts
+            .FirstOrDefaultAsync(d => d.WorkId == workId && d.Id == draftId);
 }

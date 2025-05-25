@@ -1,6 +1,6 @@
 ﻿using FicWriter.API.Models;
 
-namespace FicWriter.API.Features.Users.Common;
+namespace FicWriter.API.Shared.User;
 
 public static class RefreshTokenExtensions
 {

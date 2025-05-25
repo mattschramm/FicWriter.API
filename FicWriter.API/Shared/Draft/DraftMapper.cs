@@ -2,7 +2,7 @@
 
 namespace FicWriter.API.Shared.Draft;
 
-public class DraftResponseMapper : IFeatureMapper
+public class DraftMapper : IFeatureMapper
 {
     public DraftResponse ToResponse(Models.Draft draft)
     {

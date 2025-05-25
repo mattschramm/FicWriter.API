@@ -1,6 +1,6 @@
 ﻿using FicWriter.API.Shared.Mapper;
 
-namespace FicWriter.API.Features.Users.Common;
+namespace FicWriter.API.Shared.User;
 
 public class UserResponseMapper : IFeatureMapper
 {

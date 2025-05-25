@@ -1,7 +1,7 @@
 ﻿using FicWriter.API.Endpoints;
-using FicWriter.API.Features.Users.Common;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Validator;
+using FicWriter.API.Shared.User;
 using FluentValidation;
 using MediatR;
 
