@@ -1,5 +1,4 @@
 ﻿using ErrorOr;
-using FicWriter.API.Features.Users.Common;
 using FicWriter.API.Infrastructure.Data.Repositories.Tokens;
 using FicWriter.API.Infrastructure.Data.Repositories.Unit;
 using FicWriter.API.Infrastructure.Data.Repositories.Users;
@@ -8,6 +7,7 @@ using FicWriter.API.Infrastructure.Security.Password;
 using FicWriter.API.Infrastructure.Security.Tokens.Access;
 using FicWriter.API.Infrastructure.Security.Tokens.Refresh;
 using FicWriter.API.Models;
+using FicWriter.API.Shared.User;
 using MediatR;
 
 namespace FicWriter.API.Features.Users.Login;

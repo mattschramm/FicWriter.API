@@ -9,10 +9,10 @@ namespace FicWriter.API.Features.Drafts.Get;
 
 public record GetDraftCommand(long WorkId, long DraftId) : IWorkRequest<ErrorOr<DraftResponse>>;
 
-public class GetDraftCommandHandler(IDraftRepository draftRepository, DraftResponseMapper mapper) : IRequestHandler<GetDraftCommand, ErrorOr<DraftResponse>>
+public class GetDraftCommandHandler(IDraftRepository draftRepository, DraftMapper mapper) : IRequestHandler<GetDraftCommand, ErrorOr<DraftResponse>>
 {
     private readonly IDraftRepository _draftRepository = draftRepository;
-    private readonly DraftResponseMapper _mapper = mapper;
+    private readonly DraftMapper _mapper = mapper;
 
     public async Task<ErrorOr<DraftResponse>> Handle(GetDraftCommand request, CancellationToken cancellationToken)
     {
