@@ -1,5 +1,4 @@
-﻿using FicWriter.API.Models;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace FicWriter.API.Infrastructure.Security.Tokens.Refresh;
 

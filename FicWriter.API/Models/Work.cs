@@ -1,6 +1,4 @@
-﻿using FicWriter.API.Enums;
-
-namespace FicWriter.API.Models;
+﻿namespace FicWriter.API.Models;
 
 public class Work
 {

@@ -8,4 +8,9 @@ public static class WorkErrors
         Error.NotFound(
             code: "Work.NotFound",
             description: "Work not found");
+
+    public static Error InvalidWorkId() =>
+        Error.Validation(
+            code: "Work.InvalidId",
+            description: "Invalid work ID provided");
 }

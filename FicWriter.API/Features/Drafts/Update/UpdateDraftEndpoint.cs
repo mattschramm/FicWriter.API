@@ -1,11 +1,10 @@
-﻿using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
-using FicWriter.API.Infrastructure.Security.IdEncoder;
 using FicWriter.API.Shared.Draft;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Sqids;
 
 namespace FicWriter.API.Features.Drafts.Update;
 
@@ -15,15 +14,13 @@ public class UpdateDraftEndpoint : IEndpoint
     public void MapEndpoint(RouteGroupBuilder app)
     {
         app.MapPut("/{draftId:long}", async (
-            [FromRoute] string workId,
+            WorkId workId,
             [FromRoute] long draftId,
             [FromBody] DraftRequest request,
             IMediator mediator,
-            IValidator<DraftRequest> validator,
-            SqidsEncoder<long> encoder) =>
+            IValidator<DraftRequest> validator) =>
         {
-            var decryptedWorkId = encoder.DecodeSingle(workId);
-            var result = await Handle(request, decryptedWorkId, draftId, mediator, validator);
+            var result = await Handle(request, workId.Value, draftId, mediator, validator);
             return result;
         });
     }
