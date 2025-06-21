@@ -1,9 +1,7 @@
-﻿using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
-using FicWriter.API.Infrastructure.Security.IdEncoder;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Sqids;
 
 namespace FicWriter.API.Features.Drafts.List;
 
@@ -13,18 +11,17 @@ public class ListDraftsEndpoint : IEndpoint
     public void MapEndpoint(RouteGroupBuilder app)
     {
         app.MapGet("/", async (
-            [FromRoute] string workId,
-            IMediator mediator,
-            SqidsEncoder<long> encoder) =>
+            WorkId workId,
+            IMediator mediator) =>
         {
-            var decryptedId = encoder.DecodeSingle(workId);
-
-            var result = await Handle(decryptedId, mediator);
+            var result = await Handle(workId.Value, mediator);
             return result;
         })
             .Produces<ListDraftsResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("ListDrafts");
+            .WithName("ListDrafts")
+            .WithDisplayName("List Drafts")
+            .WithDescription("Lists all drafts for a work.");
     }
 
     private static async Task<IResult> Handle(long workId, IMediator mediator)

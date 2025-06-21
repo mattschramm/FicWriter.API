@@ -4,7 +4,6 @@ using FicWriter.API.Infrastructure.Validator;
 using FicWriter.API.Shared.User;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FicWriter.API.Features.Users.Login;
 
