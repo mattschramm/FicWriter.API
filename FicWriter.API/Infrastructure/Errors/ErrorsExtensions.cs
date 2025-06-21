@@ -49,4 +49,5 @@ public static class ErrorsExtensions
     }
 
     public static IResult ToProblem<T>(this ErrorOr<T> errorOr) => errorOr.Errors.ToProblem();
+    public static IResult ToProblem(this Error error) => new List<Error> { error }.ToProblem();
 }

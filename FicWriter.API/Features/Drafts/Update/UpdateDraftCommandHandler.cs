@@ -16,7 +16,7 @@ public class UpdateDraftCommandHandler(IDraftRepository draftRepository, IUnitOf
 
     public async Task<ErrorOr<Success>> Handle(UpdateDraftCommand request, CancellationToken cancellationToken)
     {
-        var draft = await _draftRepository.GetDraftByIdWithTracking(request.WorkId, request.DraftId);
+        var draft = await _draftRepository.GetDraftByIdWithTracking(request.DraftId);
 
         if (draft is null)
         {

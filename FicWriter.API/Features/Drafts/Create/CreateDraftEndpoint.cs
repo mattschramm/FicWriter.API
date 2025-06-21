@@ -1,10 +1,9 @@
-﻿using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
-using FicWriter.API.Infrastructure.Security.IdEncoder;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Sqids;
 
 namespace FicWriter.API.Features.Drafts.Create;
 
@@ -16,22 +15,21 @@ public class CreateDraftEndpoint : IEndpoint
     public void MapEndpoint(RouteGroupBuilder app)
     {
         app.MapPost("/", async (
-            [FromRoute] string workId,
+            WorkId workId,
             [FromBody] CreateDraftRequest request,
             IMediator mediator,
-            IValidator<CreateDraftRequest> validator,
-            SqidsEncoder<long> encoder) =>
+            IValidator<CreateDraftRequest> validator) =>
         {
-            var decryptedWorkId = encoder.DecodeSingle(workId);
-
-            var result = await Handle(decryptedWorkId, request, mediator, validator);
+            var result = await Handle(workId.Value, request, mediator, validator);
             return result;
 
         })
             .Produces<CreateDraftResponse>(StatusCodes.Status201Created)
             .ProducesValidationProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("CreateDraft");
+            .WithName("CreateDraft")
+            .WithDisplayName("Create Draft")
+            .WithDescription("Creates a new draft for a work.");
     }
 
     private static async Task<IResult> Handle(long workId, CreateDraftRequest request, IMediator mediator, IValidator<CreateDraftRequest> validator)

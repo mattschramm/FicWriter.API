@@ -22,15 +22,38 @@ public class DraftRepository(FicWriterDbContext dbContext) : IDraftRepository
     }
 
     public async Task<List<Draft>> GetDrafts(long workId) => await GetDraftsList(workId)
-        .OrderByDescending(d => d.Order)
+            .OrderByDescending(d => d.Order)
             .ToListAsync();
+
+    public void Update(Draft draft) => _dbContext.Drafts.Update(draft);
+    
+    public Task<Draft?> GetDraftByIdWithTracking(long draftId) => _dbContext.Drafts
+            .FirstOrDefaultAsync(d => d.Id == draftId);
+
+    public async Task<bool> Delete(long draftId)
+    {
+        var draft = await _dbContext.Drafts
+            .FirstOrDefaultAsync(d => d.Id == draftId);
+
+        if (draft is null)
+        {
+            return false;
+        }
+
+        await _dbContext.Drafts
+            .Where(d => d.WorkId == draft.WorkId && d.Order > draft.Order)
+            .ExecuteUpdateAsync(d => d.SetProperty(d => d.Order, d => d.Order - 1));
+
+        _dbContext.Drafts.Remove(draft);
+
+        return true;
+    }
+
+    public async Task<bool> Exists(long draftId) => await _dbContext.Drafts
+        .AsNoTracking()
+        .AnyAsync(d => d.Id == draftId);
 
     private IQueryable<Draft> GetDraftsList(long workId) => _dbContext.Drafts
             .AsNoTracking()
             .Where(d => d.WorkId == workId);
-
-    public void Update(Draft draft) => _dbContext.Drafts.Update(draft);
-    public Task<Draft?> GetDraftByIdWithTracking(long workId, long draftId) => 
-        _dbContext.Drafts
-            .FirstOrDefaultAsync(d => d.WorkId == workId && d.Id == draftId);
 }

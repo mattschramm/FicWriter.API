@@ -1,5 +1,4 @@
 ﻿using FicWriter.API.Infrastructure.Mediator.Behaviors;
-using MediatR;
 
 namespace FicWriter.API.Infrastructure.Mediator;
 

@@ -18,6 +18,12 @@ public class ValidateWorkIdBehavior<TRequest, TResponse>(IWorkRepository workRep
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var user = await _currentUser.GetCurrentUser();
+
+        if (request.WorkId <= 0)
+        {
+            return (dynamic)WorkErrors.InvalidWorkId();
+        }
+
         var exists = await _workRepository.Exists(user, request.WorkId);
 
         if (!exists)
