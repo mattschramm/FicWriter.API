@@ -1,4 +1,5 @@
-﻿using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
 using MediatR;
 using Sqids;
@@ -10,11 +11,11 @@ public class DeleteWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapDelete("/{id}", (string id, IMediator mediator, SqidsEncoder<long> encoder) =>
+        app.MapDelete("/", async (
+            WorkId workId,
+            IMediator mediator) =>
         {
-            var decryptedId = encoder.Decode(id).Single();
-
-            var result = Handle(decryptedId, mediator);
+            var result = await Handle(workId.Value, mediator);
             return result;
         })
             .Produces(StatusCodes.Status204NoContent)

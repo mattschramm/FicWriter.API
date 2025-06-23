@@ -6,7 +6,7 @@ using MediatR;
 
 namespace FicWriter.API.Features.Works.Create;
 
-[GroupName(EndpointGroupNames.Works)]
+[GroupName(EndpointGroupNames.WorksGeneral)]
 public class CreateWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(RouteGroupBuilder app)
@@ -32,7 +32,7 @@ public class CreateWorkEndpoint : IEndpoint
         var result = await mediator.Send(request);
 
         return result.Match(
-            result => Results.CreatedAtRoute("GetWorkById", new { id = result.Id }, result),
+            result => Results.CreatedAtRoute("GetWorkById", new { workId = result.Id }, result),
             errors => result.ToProblem());
     }
 }

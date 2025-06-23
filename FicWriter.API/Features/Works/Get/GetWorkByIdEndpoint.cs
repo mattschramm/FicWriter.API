@@ -1,7 +1,7 @@
-﻿using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
 using MediatR;
-using Sqids;
 
 namespace FicWriter.API.Features.Works.Get;
 
@@ -10,14 +10,11 @@ public class GetWorkByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapGet("/{id}", async (
-            string id,
-            SqidsEncoder<long> encoder,
+        app.MapGet("/", async (
+            WorkId workId,
             IMediator mediator) =>
         {
-            var decryptedId = encoder.Decode(id).Single();
-
-            var result = await Handle(decryptedId, mediator);
+            var result = await Handle(workId.Value, mediator);
             return result;
         })
             .RequireAuthorization()

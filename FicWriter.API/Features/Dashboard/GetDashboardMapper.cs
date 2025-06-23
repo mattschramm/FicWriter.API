@@ -3,7 +3,7 @@ using FicWriter.API.Shared.Mapper;
 using Sqids;
 using System.Text;
 
-namespace FicWriter.API.Features.Works.Dashboard;
+namespace FicWriter.API.Features.Dashboard;
 
 public class GetDashboardMapper(SqidsEncoder<long> sqidsEncoder) : IFeatureMapper
 {

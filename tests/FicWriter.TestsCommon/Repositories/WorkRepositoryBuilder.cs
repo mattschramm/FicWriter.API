@@ -1,4 +1,4 @@
-﻿using FicWriter.API.Features.Works.Dashboard;
+﻿using FicWriter.API.Features.Dashboard;
 using FicWriter.API.Infrastructure.Data.Repositories.Works;
 using FicWriter.API.Models;
 using Moq;

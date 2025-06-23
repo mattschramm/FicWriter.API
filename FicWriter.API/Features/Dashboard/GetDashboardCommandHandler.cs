@@ -5,7 +5,7 @@ using FicWriter.API.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FicWriter.API.Features.Works.Dashboard;
+namespace FicWriter.API.Features.Dashboard;
 
 public record GetDashboardCommand(
     [FromQuery] int Page,

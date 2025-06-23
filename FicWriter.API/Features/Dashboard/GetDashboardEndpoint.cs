@@ -5,9 +5,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FicWriter.API.Features.Works.Dashboard;
+namespace FicWriter.API.Features.Dashboard;
 
-[GroupName(EndpointGroupNames.Works)]
+[GroupName(EndpointGroupNames.Dashboard)]
 public class GetDashboardEndpoint : IEndpoint
 {
     public void MapEndpoint(RouteGroupBuilder app)
@@ -24,7 +24,8 @@ public class GetDashboardEndpoint : IEndpoint
             .Produces<GetDashboardResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status204NoContent)
             .WithName("GetDashboard")
-            .WithTags("Dashboard");
+            .WithDescription("Get a paginated list of works for the dashboard.")
+            .WithDisplayName("Dashboard");
     }
 
     private static async Task<IResult> Handle(GetDashboardCommand command, IMediator mediator, IValidator<GetDashboardCommand> validator)

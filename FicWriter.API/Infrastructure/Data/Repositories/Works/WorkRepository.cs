@@ -1,5 +1,5 @@
 ﻿using FicWriter.API.Enums;
-using FicWriter.API.Features.Works.Dashboard;
+using FicWriter.API.Features.Dashboard;
 using FicWriter.API.Models;
 using Microsoft.EntityFrameworkCore;
 

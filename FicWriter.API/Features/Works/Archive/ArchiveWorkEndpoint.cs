@@ -1,4 +1,5 @@
-﻿using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Endpoints;
 using FicWriter.API.Infrastructure.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,17 +12,16 @@ public class ArchiveWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPatch("/{id}", async (
-                [FromRoute] string id,
-                IMediator mediator,
-                SqidsEncoder<long> encoder) =>
+        app.MapPatch("/", async (
+                WorkId workId,
+                IMediator mediator) =>
             {
-                var decryptedId = encoder.Decode(id).Single();
-
-                var result = await Handle(decryptedId, mediator);
+                var result = await Handle(workId.Value, mediator);
                 return result;
             })
             .WithName("ArchiveWork")
+            .WithDisplayName("Archive Work")
+            .WithDescription("Archive or unarchive a work by its ID.")
             .Produces<ArchiveWorkResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound);
     }
