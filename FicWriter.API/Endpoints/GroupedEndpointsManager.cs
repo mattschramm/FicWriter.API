@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace FicWriter.API.Endpoints;
 
-public static class DependencyInjection
+public static class GroupedEndpointsManager
 {
     public static IServiceCollection AddGroupedEndpoints(this IServiceCollection services, Assembly assembly)
     {
@@ -38,7 +38,18 @@ public static class DependencyInjection
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Group '{groupName.GroupName}' not found for endpoint '{endpoint.GetType().Name}'.");
+                    if (!string.IsNullOrWhiteSpace(groupName.Tag))
+                    {
+                        endpoint.MapEndpoint(app.MapGroup(groupName.GroupName)
+                            .RequireAuthorization()
+                            .WithTags(groupName.Tag));
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(
+                            $"Group '{groupName.GroupName}' not found. " +
+                            $"Ensure it is defined in {nameof(GetGroups)} method.");
+                    }
                 }
             }
             else
@@ -60,12 +71,20 @@ public static class DependencyInjection
             .RequireAuthorization()
             .WithTags("Drafts"),
 
-            [EndpointGroupNames.Works] = app.MapGroup("/works")
+            [EndpointGroupNames.Works] = app.MapGroup("/works/{workId}")
             .RequireAuthorization()
             .WithTags("Works"),
 
             [EndpointGroupNames.Users] = app.MapGroup("/user")
             .WithTags("User"),
+
+            [EndpointGroupNames.Dashboard] = app.MapGroup("/dashboard")
+            .RequireAuthorization()
+            .WithTags("Dashboard"),
+
+            [EndpointGroupNames.WorksGeneral] = app.MapGroup("/works")
+            .RequireAuthorization()
+            .WithTags("Works")
         };
 
         return groups;

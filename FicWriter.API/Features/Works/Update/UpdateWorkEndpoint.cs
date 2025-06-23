@@ -1,11 +1,11 @@
-﻿using FicWriter.API.Endpoints;
+﻿using FicWriter.API.Binders;
+using FicWriter.API.Endpoints;
 using FicWriter.API.Enums;
 using FicWriter.API.Infrastructure.Errors;
 using FicWriter.API.Infrastructure.Validator;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Sqids;
 
 namespace FicWriter.API.Features.Works.Update;
 
@@ -16,19 +16,18 @@ public class UpdateWorkEndpoint : IEndpoint
 {
     public void MapEndpoint(RouteGroupBuilder app)
     {
-        app.MapPut("/{id}", async (
-            [FromRoute] string id,
+        app.MapPut("/", async (
+            WorkId workId,
             [FromBody] UpdateWorkRequest request,
             IMediator mediator,
-            IValidator<UpdateWorkRequest> validator,
-            SqidsEncoder<long> encoder) =>
+            IValidator<UpdateWorkRequest> validator) =>
         {
-            var decryptedId = encoder.Decode(id).Single();
-
-            var result = await Handle(request, decryptedId, mediator, validator);
+            var result = await Handle(request, workId.Value, mediator, validator);
             return result;
         })
             .WithName("UpdateWork")
+            .WithDescription("Update an existing work")
+            .WithDisplayName("Update Work")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status404NotFound);

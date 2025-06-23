@@ -4,6 +4,7 @@
 public class GroupNameAttribute : Attribute
 {
     public string GroupName { get; }
+    public string Tag { get; set; } = string.Empty;
 
     public GroupNameAttribute(string groupName)
     {

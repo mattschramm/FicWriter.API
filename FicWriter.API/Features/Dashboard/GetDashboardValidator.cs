@@ -1,7 +1,7 @@
 ﻿using FicWriter.API.Enums;
 using FluentValidation;
 
-namespace FicWriter.API.Features.Works.Dashboard;
+namespace FicWriter.API.Features.Dashboard;
 
 public class GetDashboardValidator : AbstractValidator<GetDashboardCommand>
 {
