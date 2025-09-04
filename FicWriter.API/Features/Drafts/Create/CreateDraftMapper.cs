@@ -1,0 +1,19 @@
+﻿using FicWriter.API.Models;
+using FicWriter.API.Shared.Mapper;
+
+namespace FicWriter.API.Features.Drafts.Create;
+
+public class CreateDraftMapper : IFeatureMapper
+{
+    public Draft ToDraft(CreateDraftCommand command) =>
+        new()
+        {
+            Title = command.Title,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            WorkId = command.WorkId
+        };
+
+    public CreateDraftResponse ToResponse(Draft draft) =>
+        new(draft.Id, draft.Title, draft.CreatedAt, draft.UpdatedAt, draft.Order);
+}
